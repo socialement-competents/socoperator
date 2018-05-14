@@ -15,7 +15,7 @@ const routes: RouteConfig[] = [
   {
     path: '/login',
     component: Login,
-    meta:{conditionalRoute:true}
+    meta: {conditionalRoute: true}
   }
 ]
 
