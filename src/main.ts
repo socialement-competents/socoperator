@@ -8,6 +8,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 
 import App from '@/App.vue'
 import router from '@/app/router'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
 
@@ -19,6 +21,14 @@ const apolloClient = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache(),
   connectToDevTools: true
+})
+
+Vue.use(Vuetify, {
+  theme: {
+    socoblue: '#29047A',
+    socogreen: '#02FAA8',
+    socolightblue: '#06D6F2'
+  }
 })
 
 Vue.use(VueApollo)
