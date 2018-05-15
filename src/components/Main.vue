@@ -95,7 +95,9 @@ export default class Main extends Vue {
       width: auto;
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
       img {
-        height: 100%;
+        object-fit: cover;
+        height: 48px;
+        width: 48px;
         border-radius: 180px;
       }
     }
@@ -105,6 +107,7 @@ export default class Main extends Vue {
       padding: 5px;
       img {
         height: 100%;
+        width: auto;
         border-radius: 0;
       }
     }

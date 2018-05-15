@@ -14,6 +14,7 @@ export interface User {
   email?: string | null /** The email */;
   firstname?: string | null /** The firstname */;
   lastname?: string | null /** The lastname */;
+  image?: string | null
 }
 /** Conversation type */
 export interface Conversation {
