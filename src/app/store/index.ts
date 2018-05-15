@@ -7,11 +7,11 @@ import getters from '@/app/store/getters'
 Vue.use(Vuex)
 
 interface State {
-  login: boolean
+  isLoggedIn: boolean
 }
 
 const state: State = {
-  login: false
+  isLoggedIn: !!window.localStorage.getItem('token')
 }
 
 export default new Vuex.Store({

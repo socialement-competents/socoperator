@@ -1,12 +1,15 @@
 import { GetterTree } from 'vuex'
-import { Conversation } from '../../typings/types'
+import { Conversation, User } from '../../typings/types'
 
 const getters: GetterTree<any, any> = {
-  isLogin (state): boolean {
-    return state.login
+  isLoggedIn (state): boolean {
+    return state.isLoggedIn
   },
   conversations (state): Conversation[] {
     return state.conversations
+  },
+  user (state): User {
+    return state.user
   }
 }
 

@@ -31,13 +31,6 @@ export interface Message {
   content?: string | null /** The message content */;
 }
 
-export interface Conversation {
-  _id? : string | null
-  isHandled: boolean | null
-  user: User | null
-  operator: User | null
-}
-
 export interface Mutation {
   addUser?: User | null;
   addConversation?: Conversation | null;

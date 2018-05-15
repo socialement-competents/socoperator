@@ -1,17 +1,17 @@
 <template>
   <div class="login-page">
     <transition name="loginslide">
-      <div v-if="!connected" class="login-container">
+      <div v-if="!isLoggedIn" class="login-container">
         <v-layout row wrap class="title">
           <h1><span class="s-letter">S</span>ocoperator</h1>
         </v-layout>
         <v-layout class="form-login" row wrap>
-          <v-flex xs12 class="username">
+          <v-flex xs12 class="email">
             <v-text-field
-              id="username"
-              v-model="username"
-              name="username-input"
-              label="Username"
+              id="email"
+              v-model="email"
+              name="email-input"
+              label="email"
               :hide-details="true"
               color="socoblue"
             ></v-text-field>
@@ -31,7 +31,7 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap class="login-button-container">
-          <v-btn class="login-button" color="socogreen" dark @click="connected = !connected">Soconnecter</v-btn>
+          <v-btn class="login-button" color="socogreen" dark @click="login">Soconnecter</v-btn>
         </v-layout>
       </div>
     </transition>
@@ -41,14 +41,17 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { mapGetters } from 'vuex'
 
-@Component
+@Component({
+  computed: mapGetters(['isLoggedIn'])
+})
 export default class Login extends Vue {
-  username:string = ''
-  password:string = ''
-  passtype:boolean = true
-  created () {
-    this.$store.dispatch('getAllConversations')
+  email: string = ''
+  password: string = ''
+  passtype: boolean = true
+  login () {
+    this.$store.dispatch('logIn', { email: this.email, password: this.password })
   }
 }
 </script>
@@ -91,7 +94,7 @@ export default class Login extends Vue {
   border-radius: 4px;
 }
 
-.form-login .username{
+.form-login .email{
   padding: 10px;
 }
 
