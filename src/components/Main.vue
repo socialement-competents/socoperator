@@ -10,8 +10,9 @@
       <button class="arrow-down-button">
         <img src="../assets/down-arrow.svg" alt="">
       </button>
-      <div class="profile-image" v-bind:class="{'placeholder': isEmptyImage(user)}">
-        <img :src="imageOrPlaceholder(user)" alt="avatar">
+      <div class="profile-image" v-bind:class="{'placeholder': !user.image}">
+        <img v-if="user.image" :src="user.image" alt="avatar">
+        <img v-else src="../assets/avatar.svg" alt="avatar">
       </div>
     </v-toolbar-items>
   </v-toolbar>
@@ -20,35 +21,19 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { User } from 'src/typings/types';
+import { User } from 'src/typings/types'
 
 @Component
 export default class Main extends Vue {
   user: User
 
-  constructor() {
+  constructor () {
     super()
 
     this.user = {
-      firstname: "Soco",
-      lastname: "man",
-      image: "https://i.ytimg.com/vi/n4FnINNtr74/hqdefault.jpg"
-    }
-  }
-
-  isEmptyImage(user: User): boolean {
-    if (user.image == '' || user.image == null) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  imageOrPlaceholder(user: User): string {
-    if (this.isEmptyImage(user)) {
-      return require("../assets/avatar.svg")
-    } else {
-      return user.image as string
+      firstname: 'Soco',
+      lastname: 'man',
+      image: 'https://i.ytimg.com/vi/n4FnINNtr74/hqdefault.jpg'
     }
   }
 }
