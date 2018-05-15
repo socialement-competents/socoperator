@@ -10,12 +10,12 @@ import { LOGIN } from '../../users/queries'
 const actions: ActionTree<any, any> = {
   async getAllConversations ({ state, commit }, user: User) {
     commit(TYPES.REQUEST_CONVERSATIONS)
-    const result = await apolloClient.query<Conversation>({ query: GET_CONVERSATIONS })
+    const result = await apolloClient.query < Conversation > ({ query: GET_CONVERSATIONS })
     commit(TYPES.RECEIVED_CONVERSATIONS, result.data)
   },
   async logIn ({ state, commit }, { email, password }: LoginPayload) {
     commit(TYPES.REQUEST_LOGIN)
-    const response = await apolloClient.query<LoginData>({
+    const response = await apolloClient.query < LoginData > ({
       query: LOGIN,
       variables: {
         email,

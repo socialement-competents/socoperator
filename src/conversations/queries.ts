@@ -1,16 +1,16 @@
 import gql from 'graphql-tag'
 
 export const GET_CONVERSATIONS = gql`
-query{
-  conversations{
+query {
+  conversations {
     _id
-    user{
+    user {
       _id
     }
-    operator{
+    operator {
       _id
     }
-    messages{
+    messages {
       content
     }
   }

@@ -7,6 +7,7 @@ const mutations: MutationTree<any> = {
   },
   [TYPES.RECEIVED_CONVERSATIONS] (state, conversations: Conversation): void {
     state.conversations = conversations
+    console.log(state.conversations)
   },
   [TYPES.REQUEST_LOGIN] (state): void {
     state.isLoggedIn = false
