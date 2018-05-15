@@ -3,6 +3,7 @@ import Router, { RouteConfig } from 'vue-router'
 
 const HelloWorld: AsyncComponent = (): any => import('@/components/HelloWorld')
 const Login: AsyncComponent = (): any => import('@/components/Login')
+const Main: AsyncComponent = (): any => import('@/components/Main')
 
 Vue.use(Router)
 
@@ -15,7 +16,16 @@ const routes: RouteConfig[] = [
   {
     path: '/login',
     component: Login,
-    meta: {conditionalRoute: true}
+    meta: {
+      conditionalRoute: true
+    }
+  },
+  {
+    path: '/app',
+    component: Main,
+    meta: {
+      isAuthRequired: true
+    }
   }
 ]
 

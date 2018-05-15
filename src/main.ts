@@ -27,7 +27,8 @@ Vue.use(Vuetify, {
   theme: {
     socoblue: '#29047A',
     socogreen: '#02FAA8',
-    socolightblue: '#06D6F2'
+    socolightblue: '#06D6F2',
+    socodarkgray: '#545B58'
   }
 })
 
