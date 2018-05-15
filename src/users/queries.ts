@@ -1,14 +1,9 @@
 import gql from 'graphql-tag'
 
 export const GET_USERS = gql`
-query getUsers {
-  users {
-    id,
-    email,
-    firstname,
-    lastname,
-    bio,
-    image
+query{
+  users{
+    email
   }
 }`
 

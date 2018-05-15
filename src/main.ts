@@ -8,16 +8,17 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 
 import App from '@/App.vue'
 import router from '@/app/router'
+import store from '@/app/store'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
 
 Vue.config.productionTip = false
 
 const httpLink = new HttpLink({
-  uri: `https://${process.env.SERVER_HOST || 'localhost'}:${process.env.SERVER_PORT || '3333'}/graphql`
+  uri: `http://localhost:3000/graphql`
 })
 
-const apolloClient = new ApolloClient({
+export const apolloClient = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache(),
   connectToDevTools: true
@@ -45,6 +46,8 @@ new Vue({
   el: '#app',
   provide: apolloProvider.provide(),
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
+

@@ -15,6 +15,13 @@ export interface User {
   cards?: (string | null)[] | null /** The cards */;
 }
 
+export interface Conversation {
+  _id? : string | null
+  isHandled: boolean | null
+  user: User | null
+  operator: User | null
+}
+
 export interface Mutation {
   addUser?: User | null;
 }

@@ -43,6 +43,9 @@ export default class Login extends Vue {
   username:string = ''
   password:string = ''
   passtype:boolean = true
+  created () {
+    this.$store.dispatch('getAllConversations')
+  }
 }
 </script>
 
@@ -115,7 +118,7 @@ export default class Login extends Vue {
 }
 
 .login-button-container .login-button{
-  font-weight: 900; 
+  font-weight: 900;
 }
 
 .login-container.sliding{
