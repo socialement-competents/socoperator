@@ -1,32 +1,51 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+  <v-layout row>
+    <v-flex xs12 sm6 offset-sm3>
+      <v-card>
+        <v-toolbar color="cyan" dark>
+          <v-toolbar-side-icon></v-toolbar-side-icon>
+          <v-toolbar-title>Inbox</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon>
+            <v-icon>search</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-list two-line>
+          <template v-for="(conversation, index) in conversations.conversations">
+            <v-subheader v-if="conversation.header" :key="conversation.header">{{ conversation.header }}</v-subheader>
+            <v-divider v-else-if="conversation.divider" :inset="true" :key="index"></v-divider>
+            <v-list-tile v-else :key="conversation.__typename" avatar @click="">
+              <v-list-tile-avatar>
+                <img :src="conversation.avatar">
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{conversation.__typename}}</v-list-tile-title>
+                <v-list-tile-sub-title>{{conversation.content}}</v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+        </v-list>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { mapGetters } from 'vuex'
 
-@Component
+@Component({
+  computed: mapGetters(['conversations'])
+})
 export default class HelloWorld extends Vue {
-  msg:string = 'Welcome to Your Vue.js App'
+  constructor () {
+    super()
+    this.getConversations()
+  }
+  getConversations () {
+    this.$store.dispatch('getAllConversations')
+  }
 }
 </script>
 

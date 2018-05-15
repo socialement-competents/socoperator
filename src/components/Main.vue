@@ -15,6 +15,7 @@
         <img v-else src="../assets/avatar.svg" alt="avatar">
       </div>
     </v-toolbar-items>
+    {{conversations}}
   </v-toolbar>
 </template>
 
@@ -22,8 +23,11 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { User } from 'src/typings/types'
+import { mapGetters } from 'vuex'
 
-@Component
+@Component({
+  computed: mapGetters(['conversations'])
+})
 export default class Main extends Vue {
   user: User
 
@@ -35,6 +39,10 @@ export default class Main extends Vue {
       lastname: 'man',
       image: 'https://i.ytimg.com/vi/n4FnINNtr74/hqdefault.jpg'
     }
+    this.getConversations()
+  }
+  getConversations () {
+    this.$store.dispatch('getAllConversations')
   }
 }
 </script>
@@ -45,7 +53,7 @@ export default class Main extends Vue {
   border-bottom: 2px solid #ECEFEE;
 
   .title {
-    margin: 0 40px !important; 
+    margin: 0 40px !important;
     display: flex;
     align-items: center;
     flex-direction: row;

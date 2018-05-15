@@ -13,12 +13,10 @@ query getUsers {
 export const GET_USER_BY_ID = gql`
 query getUserById($id: String!) {
   userById(id: $id) {
-    id,
-    email,
-    firstname,
-    lastname,
-    bio,
-    image
+    id
+    email
+    firstname
+    lastname
   }
 }
 `
