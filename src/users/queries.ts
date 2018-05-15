@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const GET_USERS = gql`
-query{
+query getUsers {
   users{
     id
     email
@@ -19,6 +19,16 @@ query getUserById($id: String!) {
     lastname,
     bio,
     image
+  }
+}
+`
+
+export const LOGIN = gql`
+query logIn($email: String!, $password: String!) {
+  logIn(email: $email, password: $password) {
+    _id
+    email
+    token
   }
 }
 `

@@ -1,11 +1,11 @@
 import { ActionTree } from 'vuex'
-import axios from 'axios'
 
 import TYPES from '@/app/store/types'
 import { User } from '../../typings/types'
 import { LoginPayload } from '../../typings/customTypes'
 import { apolloClient } from '../../main'
 import { GET_CONVERSATIONS } from '../../conversations/queries'
+import { LOGIN } from '../../users/queries'
 
 const actions: ActionTree<any, any> = {
   async getAllConversations ({ state, commit }, user: User) {
@@ -15,9 +15,12 @@ const actions: ActionTree<any, any> = {
   },
   async logIn ({ state, commit }, { email, password }: LoginPayload) {
     commit(TYPES.REQUEST_LOGIN)
-    const response = await axios.post('http://localhost:3000/api/users/login', {
-      email,
-      password
+    const response = await apolloClient.query({
+      query: LOGIN,
+      variables: {
+        email,
+        password
+      }
     })
     window.localStorage.setItem('token', response.data.token)
     commit(TYPES.RECEIVED_LOGIN, response.data)

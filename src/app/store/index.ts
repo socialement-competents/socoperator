@@ -11,7 +11,10 @@ interface State {
 }
 
 const state: State = {
-  isLoggedIn: !!window.localStorage.getItem('token')
+  isLoggedIn: (window &&
+    window.localStorage &&
+    !!window.localStorage.getItem('token')) ||
+    false
 }
 
 export default new Vuex.Store({
