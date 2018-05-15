@@ -1,0 +1,114 @@
+<template>
+  <v-toolbar flat color="#F1F4F3" height="80px">
+    <a class="title" href="">
+      <img src="../assets/soco-logo.svg" alt="" height="70%">
+      <span class="socodarkgray--text hidden-xs-only">socoperator</span>
+    </a>
+    <v-spacer></v-spacer>
+    <v-toolbar-items class="item-profile">
+      <span>{{user.firstname}} {{user.lastname}}</span>
+      <button class="arrow-down-button">
+        <img src="../assets/down-arrow.svg" alt="">
+      </button>
+      <div class="profile-image" v-bind:class="{'placeholder': isEmptyImage(user)}">
+        <img :src="imageOrPlaceholder(user)" alt="avatar">
+      </div>
+    </v-toolbar-items>
+  </v-toolbar>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import Component from 'vue-class-component'
+import { User } from 'src/typings/types';
+
+@Component
+export default class Main extends Vue {
+  user: User
+
+  constructor() {
+    super()
+
+    this.user = {
+      firstname: "Soco",
+      lastname: "man",
+      image: "https://i.ytimg.com/vi/n4FnINNtr74/hqdefault.jpg"
+    }
+  }
+
+  isEmptyImage(user: User): boolean {
+    if (user.image == '' || user.image == null) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  imageOrPlaceholder(user: User): string {
+    if (this.isEmptyImage(user)) {
+      return require("../assets/avatar.svg")
+    } else {
+      return user.image as string
+    }
+  }
+}
+</script>
+
+<style scoped lang="scss">
+
+.toolbar {
+  border-bottom: 2px solid #ECEFEE;
+
+  .title {
+    margin: 0 40px !important; 
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    height: 100%;
+    text-decoration: none;
+
+    span {
+      margin-left: 20px;
+      font-weight: 600 !important;
+    }
+  }
+
+  .arrow-down-button {
+    height: auto;
+    display: flex;
+    align-items: center;
+    margin: 0 14px;
+    outline: none;
+
+    img {
+      height: 14px;
+    }
+  }
+
+  .item-profile {
+    display: flex;
+    align-items: center;
+    margin: 0 40px !important;
+    .profile-image {
+      border-radius: 180px;
+      height: 60%;
+      width: auto;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+      img {
+        height: 100%;
+        border-radius: 180px;
+      }
+    }
+
+    .placeholder {
+      background-color: #d0d0d0;
+      padding: 5px;
+      img {
+        height: 100%;
+        border-radius: 0;
+      }
+    }
+  }
+}
+
+</style>
