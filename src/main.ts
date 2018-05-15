@@ -15,7 +15,7 @@ import 'vuetify/dist/vuetify.min.css'
 Vue.config.productionTip = false
 
 const httpLink = new HttpLink({
-  uri: `http://localhost:3000/graphql`
+  uri: process.env.SERVER_URL || 'http://localhost:3333/graphql'
 })
 
 export const apolloClient = new ApolloClient({
