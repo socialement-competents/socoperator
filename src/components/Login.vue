@@ -1,36 +1,40 @@
 <template>
   <div class="login-page">
-    <div class="login-container">
-      <v-layout row wrap class="title">
-        <h1><span class="s-letter">S</span>ocoperator</h1>
-      </v-layout>
-      <v-layout class="form-login" row wrap>
-        <v-flex xs12 class="username">
-          <v-text-field
-            id="username"
-            name="username-input"
-            label="Username"
-            :hide-details="true"
-            color="socoblue"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs12 class="password">
-          <v-text-field
-            id="password"
-            name="password-input"
-            label="Password"
-            :append-icon="passtype ? 'visibility' : 'visibility_off'"
-            :append-icon-cb="() => (passtype = !passtype)"
-            :type="passtype ? 'password' : 'text'"
-            :hide-details="true"
-            color="socoblue"
-          ></v-text-field>
-        </v-flex>
-      </v-layout>
-      <v-layout row wrap class="login-button-container">
-        <v-btn class="login-button" color="socogreen" dark>Soconnecter</v-btn>
-      </v-layout>
-    </div>
+    <transition name="loginslide">
+      <div v-if="!connected" class="login-container">
+        <v-layout row wrap class="title">
+          <h1><span class="s-letter">S</span>ocoperator</h1>
+        </v-layout>
+        <v-layout class="form-login" row wrap>
+          <v-flex xs12 class="username">
+            <v-text-field
+              id="username"
+              v-model="username"
+              name="username-input"
+              label="Username"
+              :hide-details="true"
+              color="socoblue"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12 class="password">
+            <v-text-field
+              id="password"
+              name="password-input"
+              v-model="password"
+              label="Password"
+              :append-icon="passtype ? 'visibility' : 'visibility_off'"
+              :append-icon-cb="() => (passtype = !passtype)"
+              :type="passtype ? 'password' : 'text'"
+              :hide-details="true"
+              color="socoblue"
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-layout row wrap class="login-button-container">
+          <v-btn class="login-button" color="socogreen" dark @click="connected = !connected">Soconnecter</v-btn>
+        </v-layout>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -43,6 +47,7 @@ export default class Login extends Vue {
   username:string = ''
   password:string = ''
   passtype:boolean = true
+  connected:boolean = false
 }
 </script>
 
@@ -118,14 +123,16 @@ export default class Login extends Vue {
   font-weight: 900; 
 }
 
-.login-container.sliding{
-  animation-name: loginslide;
-  animation-duration: 4s;
+.loginslide-enter-active {
+  animation: loginslide 1.5s;
+}
+.loginslide-leave-active {
+  animation: loginslide 1.5s reverse;
 }
 
 @keyframes loginslide {
-  from {left: 0%;}
-  to {left:-60%;}
+  from {left:-60%;}
+  to {left: 0%;}
 }
 
 </style>
