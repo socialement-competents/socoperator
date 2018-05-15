@@ -1,15 +1,25 @@
 <template>
   <v-toolbar flat color="#F1F4F3" height="80px">
     <a class="title" href="">
-      <img src="../assets/soco-logo.svg" alt="" height="70%">
+      <img src="../assets/soco-logo.png" alt="" height="70%">
       <span class="socodarkgray--text hidden-xs-only">socoperator</span>
     </a>
     <v-spacer></v-spacer>
     <v-toolbar-items class="item-profile">
       <span>{{user.firstname}} {{user.lastname}}</span>
-      <button class="arrow-down-button">
-        <img src="../assets/down-arrow.svg" alt="">
-      </button>
+      <v-menu auto class="arrow-down-button">
+        <button slot="activator">
+          <img src="../assets/down-arrow.svg" alt="">
+        </button>
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-title>test</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile>
+            <v-list-tile-title>test</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
       <div class="profile-image" v-bind:class="{'placeholder': !user.image}">
         <img v-if="user.image" :src="user.image" alt="avatar">
         <img v-else src="../assets/avatar.svg" alt="avatar">
