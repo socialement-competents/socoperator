@@ -1,7 +1,7 @@
 import { ActionTree } from 'vuex'
 
 import TYPES from '@/app/store/types'
-import { User, Conversation } from '../../typings/types'
+import { User } from '../../typings/types'
 import {
   LoginPayload,
   LoginData,
