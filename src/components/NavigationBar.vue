@@ -11,7 +11,7 @@
         <v-icon slot="activator">keyboard_arrow_down</v-icon>
         <v-list>
           <v-list-tile>
-            <v-list-tile-title>test</v-list-tile-title>
+            <v-list-tile-title>Options</v-list-tile-title>
           </v-list-tile>
           <v-list-tile @click.stop="logOut">
             <v-list-tile-title>Se désoconnecter</v-list-tile-title>

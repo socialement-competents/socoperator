@@ -30,7 +30,6 @@ export default class MessageList extends Vue {
 
     this.message = { avatar: 'https://i.ytimg.com/vi/iHBDbvH0k9k/hqdefault.jpg', title: 'Brunch this weekend?', subtitle: "<b>Ali Connors</b> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?", active: false }
   }
-  
 }
 </script>
 

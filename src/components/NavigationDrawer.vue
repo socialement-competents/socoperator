@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app clipped flat width="240" class="drawer">
-    <v-btn color="socogreen" class="socobutton">test</v-btn>
+    <v-btn color="socogreen" class="socobutton">Soco</v-btn>
     <div class="list">
       <button class="list-button" v-for="(button, key) in buttons" :key="`button-${key}`" v-on:click="activateButton(button)">
         <div class="vertical-selected" v-if="button.active"></div>
@@ -25,8 +25,10 @@ export default class NavigationDrawer extends Vue {
     super()
 
     this.buttons = [
-      { title: 'Socotest', icon: 'add', active: true },
-      { title: 'Socotest', icon: 'add', active: false }
+      { title: 'Mes conversations', icon: 'add', active: true },
+      { title: 'Conversations dispo', icon: 'add', active: false },
+      { title: 'Mon profil', icon: 'add', active: false },
+      { title: 'Mes sococoins', icon: 'add', active: false }
     ]
   }
 
