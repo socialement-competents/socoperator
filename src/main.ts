@@ -25,8 +25,8 @@ const httpLink = createHttpLink({
 const wsLink = new WebSocketLink({
   uri: process.env.SERVER_URL || 'ws://localhost:3000/subscriptions',
   options: {
-    reconnect: true,
-  },
+    reconnect: true
+  }
 })
 
 const link = split(
