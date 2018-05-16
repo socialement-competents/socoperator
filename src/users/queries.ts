@@ -27,6 +27,8 @@ query logIn($email: String!, $password: String!) {
     _id
     email
     token
+    firstname
+    lastname
   }
 }
 `

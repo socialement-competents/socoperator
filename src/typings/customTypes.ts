@@ -1,5 +1,22 @@
 import { Conversation } from '@/typings/types'
 
+export type RegisterPayload = {
+  email: string;
+  password: string;
+  firstname: string;
+  lastname: string;
+}
+
+export type RegisterData = {
+  register: {
+    _id: string;
+    token: string;
+    email: string;
+    firstname: string;
+    lastname: string;
+  }
+}
+
 export type LoginPayload = {
   email: string;
   password: string;
@@ -7,10 +24,16 @@ export type LoginPayload = {
 
 export type LoginData = {
   logIn: {
+    _id: string;
     token: string;
     email: string;
-    _id: string;
+    firstname: string;
+    lastname: string;
   }
+}
+
+export type GetAllConversationsData = {
+  conversations: Array<Conversation>
 }
 
 export interface State {

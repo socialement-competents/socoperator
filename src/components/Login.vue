@@ -11,7 +11,7 @@
               id="email"
               v-model="email"
               name="email-input"
-              label="email"
+              label="Email"
               :hide-details="true"
               color="socoblue"
             ></v-text-field>
@@ -22,10 +22,31 @@
               name="password-input"
               v-model="password"
               @keyup.enter="logIn({ email, password})"
-              label="Password"
+              label="Mot de passe"
               :append-icon="passtype ? 'visibility' : 'visibility_off'"
               :append-icon-cb="() => (passtype = !passtype)"
               :type="passtype ? 'password' : 'text'"
+              :hide-details="true"
+              color="socoblue"
+            ></v-text-field>
+          </v-flex>
+          <v-flex v-if="isRegistering" xs12 class="firstname">
+            <v-text-field
+              id="firstname"
+              v-model="firstname"
+              name="firstname-input"
+              label="Prénom"
+              :hide-details="true"
+              color="socoblue"
+            ></v-text-field>
+          </v-flex>
+          <v-flex v-if="isRegistering" xs12 class="lastname">
+            <v-text-field
+              id="lastname"
+              name="lastname-input"
+              v-model="lastname"
+              @keyup.enter="logIn({ email, lastname})"
+              label="Nom"
               :hide-details="true"
               color="socoblue"
             ></v-text-field>
@@ -35,32 +56,44 @@
           Erreur de soconnexion !<br>
           Login ou mot de passe invalide
         </div>
-        <div v-if="isRegistering" class="login-button-container">
-          <v-btn
-            class="login-button"
-            color="socolightblue"
-            dark
-            @click="register({ email, password })"
-          >Valider</v-btn>
-        </div>
-        <v-layout v-else row wrap class="login-button-container">
-          <v-flex xs6>
-            <v-btn
-              class="login-button"
-              color="socolightblue"
-              dark
-              @click="isRegistering = true"
-            >S'enregister</v-btn>
-          </v-flex>
-          <v-flex xs6>
-            <v-btn
-              class="login-button"
-              color="socogreen"
-              dark
-              @click="logIn({ email, password })"
-            >Soconnecter</v-btn>
-          </v-flex>
-        </v-layout>
+        <transition name="fade" mode="out-in">
+          <v-layout v-if="isRegistering" row wrap class="login-button-container">
+            <v-flex xs6>
+              <v-btn
+                class="login-button"
+                color="socolightblue"
+                dark
+                @click="isRegistering = false"
+              >Retour</v-btn>
+            </v-flex>
+            <v-flex xs6>
+              <v-btn
+                class="login-button"
+                color="socogreen"
+                dark
+                @click="register({ email, password, firstname, lastname })"
+              >Valider</v-btn>
+            </v-flex>
+          </v-layout>
+          <v-layout v-else row wrap class="login-button-container">
+            <v-flex xs6>
+              <v-btn
+                class="login-button"
+                color="socolightblue"
+                dark
+                @click="isRegistering = true"
+              >S'enregister</v-btn>
+            </v-flex>
+            <v-flex xs6>
+              <v-btn
+                class="login-button"
+                color="socogreen"
+                dark
+                @click="logIn({ email, password })"
+              >Soconnecter</v-btn>
+            </v-flex>
+          </v-layout>
+        </transition>
       </div>
     </transition>
   </div>
@@ -78,6 +111,8 @@ import { mapGetters, mapActions } from 'vuex'
 export default class Login extends Vue {
   email: string = ''
   password: string = ''
+  firstname: string = ''
+  lastname: string = ''
   passtype: boolean = true
   isRegistering: boolean
 
@@ -127,11 +162,11 @@ export default class Login extends Vue {
   border-radius: 4px;
 }
 
-.form-login .email{
+.form-login .email, .form-login .firstname, .form-login .lastname {
   padding: 10px;
 }
 
-.form-login .password{
+.form-login .password {
   padding: 10px;
   border-top: 1px solid #dedede;
 }
@@ -171,6 +206,17 @@ export default class Login extends Vue {
 @keyframes loginslide {
   from {left:-60%;}
   to {left: 0%;}
+}
+
+.fade-enter-active {
+  animation: fade 3s;
+}
+.fade-leave-active {
+  animation: fade 3s reverse;
+}
+
+@keyframes fade {
+  from { opacity: 0 }
 }
 
 .login-error {

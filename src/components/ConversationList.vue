@@ -37,12 +37,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { Conversation } from '../typings/types'
 
 @Component({
   props: ['messages']
 })
 export default class ConversationList extends Vue {
-  messages: Array<Object> | undefined
+  messages: Array<Conversation> | undefined
 
   select (message: any) {
     if (this.messages) {

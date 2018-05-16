@@ -19,17 +19,25 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { Message } from '../typings/types'
 
 @Component({
   props: ['message']
 })
 export default class MessageList extends Vue {
-  message: Object | undefined
+  message: Message | undefined
 
-  constructor () {
-    super()
+  get msgOrDefault (): Object {
+    if (this.message) {
+      return this.message
+    }
 
-    this.message = { avatar: 'https://i.ytimg.com/vi/iHBDbvH0k9k/hqdefault.jpg', title: 'Brunch this weekend?', subtitle: "<b>Ali Connors</b> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?", active: false }
+    return {
+      avatar: 'https://i.ytimg.com/vi/iHBDbvH0k9k/hqdefault.jpg',
+      title: 'Brunch this weekend?',
+      subtitle: "<b>Ali Connors</b> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
+      active: false
+    }
   }
 }
 </script>

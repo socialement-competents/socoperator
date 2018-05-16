@@ -15,6 +15,8 @@ query {
       firstname
     }
     messages {
+      _id
+      user
       content
     }
   }

@@ -2,17 +2,37 @@ import { ActionTree } from 'vuex'
 
 import TYPES from '@/app/store/types'
 import { User, Conversation } from '../../typings/types'
-import { LoginPayload, LoginData } from '../../typings/customTypes'
+import {
+  LoginPayload,
+  LoginData,
+  RegisterPayload,
+  GetAllConversationsData
+} from '../../typings/customTypes'
 import { apolloClient } from '../../main'
 import router from '@/app/router'
 import { GET_CONVERSATIONS } from '../../conversations/queries'
 import { LOGIN } from '../../users/queries'
+import { REGISTER } from '../../users/mutations'
 
 const actions: ActionTree<any, any> = {
   async getAllConversations ({ commit }, user: User) {
     commit(TYPES.REQUEST_CONVERSATIONS)
-    const result = await apolloClient.query < Conversation > ({ query: GET_CONVERSATIONS })
-    commit(TYPES.RECEIVED_CONVERSATIONS, result.data)
+    const result = await apolloClient.query < GetAllConversationsData > ({ query: GET_CONVERSATIONS })
+    if (!result || !result.data || !result.data.conversations) {
+      throw new Error('Error fetching the conversations')
+    }
+    commit(TYPES.RECEIVED_CONVERSATIONS, result.data.conversations)
+  },
+  async register ({ commit }, { email, password, firstname, lastname }: RegisterPayload) {
+    const repsonse = await apolloClient.mutate({
+      mutation: REGISTER,
+      variables: {
+        email,
+        password,
+        firstname,
+        lastname
+      }
+    })
   },
   async logIn ({ commit }, { email, password }: LoginPayload) {
     commit(TYPES.REQUEST_LOGIN)

@@ -3,11 +3,9 @@
     <NavigationDrawer></NavigationDrawer>
     <NavigationBar></NavigationBar>
     <v-content>
-      <v-container fluid>
         <transition name="pageChange" mode="out-in">
           <router-view/>
         </transition>
-        </v-container>
     </v-content>
   </v-app>
 </template>
@@ -20,8 +18,8 @@ import NavigationBar from '@/components/NavigationBar'
 
 @Component({
   components: {
-    'NavigationBar': NavigationBar,
-    'NavigationDrawer': NavigationDrawer
+    NavigationBar,
+    NavigationDrawer
   }
 })
 export default class App extends Vue {
