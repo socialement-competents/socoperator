@@ -1,4 +1,4 @@
-import { Conversation } from '@/typings/types'
+import { Conversation, User } from '@/typings/types'
 
 export type RegisterPayload = {
   email: string;
@@ -8,7 +8,7 @@ export type RegisterPayload = {
 }
 
 export type RegisterData = {
-  register: {
+  addUser: {
     _id: string;
     token: string;
     email: string;
@@ -40,4 +40,5 @@ export interface State {
   isLoggedIn: boolean;
   conversations: Conversation[];
   loginError: boolean;
+  user: User | undefined;
 }

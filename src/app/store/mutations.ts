@@ -10,6 +10,7 @@ const mutations: MutationTree<any> = {
   },
   [TYPES.RECEIVED_LOGIN] (state, user: User): void {
     state.isLoggedIn = true
+    console.log(user)
     state.user = user
   },
   [TYPES.REQUEST_LOGIN] (state): void {

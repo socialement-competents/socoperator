@@ -6,7 +6,8 @@ import {
   LoginPayload,
   LoginData,
   RegisterPayload,
-  GetAllConversationsData
+  GetAllConversationsData,
+  RegisterData
 } from '../../typings/customTypes'
 import { apolloClient } from '../../main'
 import router from '@/app/router'
@@ -24,7 +25,7 @@ const actions: ActionTree<any, any> = {
     commit(TYPES.RECEIVED_CONVERSATIONS, result.data.conversations)
   },
   async register ({ commit }, { email, password, firstname, lastname }: RegisterPayload) {
-    const repsonse = await apolloClient.mutate({
+    const response = await apolloClient.mutate < RegisterData > ({
       mutation: REGISTER,
       variables: {
         email,
@@ -32,6 +33,14 @@ const actions: ActionTree<any, any> = {
         firstname,
         lastname
       }
+    })
+    if (!response || !response.data || !response.data.addUser || !response.data.addUser._id) {
+      throw new Error('Error registering')
+    }
+    window.localStorage.setItem('token', response.data.addUser.token)
+    commit(TYPES.RECEIVED_LOGIN, response.data.addUser)
+    router.push({
+      path: '/'
     })
   },
   async logIn ({ commit }, { email, password }: LoginPayload) {
@@ -50,7 +59,7 @@ const actions: ActionTree<any, any> = {
         throw new Error(JSON.stringify(response))
       }
       window.localStorage.setItem('token', response.data.logIn.token)
-      commit(TYPES.RECEIVED_LOGIN, response.data)
+      commit(TYPES.RECEIVED_LOGIN, response.data.logIn)
       router.push({
         path: '/'
       })

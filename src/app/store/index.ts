@@ -13,7 +13,8 @@ const state: State = {
     !!window.localStorage.getItem('token')) ||
     false,
   conversations: [],
-  loginError: false
+  loginError: false,
+  user: undefined
 }
 
 export default new Vuex.Store({
