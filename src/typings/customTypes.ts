@@ -6,12 +6,15 @@ export type LoginPayload = {
 }
 
 export type LoginData = {
-  token: string;
-  email: string;
-  _id: string;
+  logIn: {
+    token: string;
+    email: string;
+    _id: string;
+  }
 }
 
 export interface State {
   isLoggedIn: boolean;
   conversations: Conversation[];
+  loginError: boolean;
 }

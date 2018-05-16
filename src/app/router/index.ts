@@ -36,7 +36,6 @@ const router: Router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(store.getters.isLoggedIn)
   if (to.matched.some(record => record.meta.isAuthRequired) &&
     !store.getters.isLoggedIn) {
     next({ path: '/login' })

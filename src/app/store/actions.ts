@@ -9,12 +9,12 @@ import { GET_CONVERSATIONS } from '../../conversations/queries'
 import { LOGIN } from '../../users/queries'
 
 const actions: ActionTree<any, any> = {
-  async getAllConversations ({ state, commit }, user: User) {
+  async getAllConversations ({ commit }, user: User) {
     commit(TYPES.REQUEST_CONVERSATIONS)
     const result = await apolloClient.query < Conversation > ({ query: GET_CONVERSATIONS })
     commit(TYPES.RECEIVED_CONVERSATIONS, result.data)
   },
-  async logIn ({ state, commit }, { email, password }: LoginPayload) {
+  async logIn ({ commit }, { email, password }: LoginPayload) {
     commit(TYPES.REQUEST_LOGIN)
     const response = await apolloClient.query < LoginData > ({
       query: LOGIN,
@@ -23,12 +23,22 @@ const actions: ActionTree<any, any> = {
         password
       }
     })
-    window.localStorage.setItem('token', response.data.token)
-    setTimeout(() => router.push({
-      path: '/'
-    }), 2000)
-
-    commit(TYPES.RECEIVED_LOGIN, response.data)
+    try {
+      console.log(response)
+      if (!response.data || !response.data.logIn || !response.data.logIn.token) {
+        console.log('Invalid username or password')
+        throw new Error(JSON.stringify(response))
+      }
+      window.localStorage.setItem('token', response.data.logIn.token)
+      commit(TYPES.RECEIVED_LOGIN, response.data)
+      router.push({
+        path: '/'
+      })
+      return
+    } catch (e) {
+      console.error('Login failed:', e)
+      commit(TYPES.LOGIN_ERROR)
+    }
   },
   logOut ({ commit }) {
     try {
