@@ -1,5 +1,5 @@
 <template>
-  <v-flex xs4 class="conversation-list shadow">
+  <div class="conversation-list">
     <v-container grid-list-md text-xs-center class="">
       <v-layout row justify-center class="hidden-xs-only">
         <v-flex xs10>
@@ -31,7 +31,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </v-flex>
+  </div>
 </template>
 
 <script lang="ts">
@@ -57,15 +57,13 @@ export default class ConversationList extends Vue {
 
 <style scoped lang="scss">
 
-.shadow {
-  box-shadow: 0 0 10px -6px rgba(0, 0, 0, 0.5);
-}
-
 .conversation-list {
   background-color: #F6FAF9;
   margin: 0 !important;
   height: 100vh;
   padding: 0 !important;
+  z-index: 1;
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
 
   .list {
     background-color: transparent;

@@ -1,8 +1,12 @@
 <template>
   <v-container grid-list-md text-xs-center fluid class="no-padding">
     <v-layout row wrap>
-      <ConversationList :messages="messages"></ConversationList>
-      <MessageList></MessageList>
+      <v-flex xs4>
+        <ConversationList :messages="messages"></ConversationList>
+      </v-flex>
+      <v-flex xs8>
+        <MessageList></MessageList>
+      </v-flex>
     </v-layout>
   </v-container>
 </template>
@@ -27,11 +31,11 @@ export default class MainContent extends Vue {
 
     this.messages = [
       { header: 'Today' },
-          { avatar: 'https://i.ytimg.com/vi/iHBDbvH0k9k/hqdefault.jpg', title: 'Brunch this weekend?', subtitle: "<b>Ali Connors</b> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?", active: false },
-          { avatar: 'https://i.ytimg.com/vi/KbgVJr_pfUc/sddefault.jpg?v=578d9345', title: 'Summer BBQ', subtitle: "<b>to Alex, Scott, Jennifer</b> &mdash; Wish I could come, but I'm out of town this weekend.", active: true },
-          { avatar: 'https://i.ytimg.com/vi/o6TzaN2HUCI/hqdefault.jpg', title: 'Oui oui', subtitle: '<b>Sandra Adams</b> &mdash; Do you have Paris recommendations? Have you ever been?', active: false },
-          { avatar: 'https://i.ytimg.com/vi/DOC8QUKbzwo/hqdefault.jpg', title: 'Birthday gift', subtitle: '<b>Trevor Hansen</b> &mdash; Have any ideas about what we should get Heidi for her birthday?', active: false },
-          { avatar: 'https://redcdn.net/hpimg4/pics/845563hqdefault.jpg', title: 'Recipe to try', subtitle: '<b>Britta Holt</b> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.', active: false }
+      { avatar: 'https://i.ytimg.com/vi/iHBDbvH0k9k/hqdefault.jpg', title: 'Brunch this weekend?', subtitle: "<b>Ali Connors</b> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?", active: false },
+      { avatar: 'https://i.ytimg.com/vi/KbgVJr_pfUc/sddefault.jpg?v=578d9345', title: 'Summer BBQ', subtitle: "<b>to Alex, Scott, Jennifer</b> &mdash; Wish I could come, but I'm out of town this weekend.", active: true },
+      { avatar: 'https://i.ytimg.com/vi/o6TzaN2HUCI/hqdefault.jpg', title: 'Oui oui', subtitle: '<b>Sandra Adams</b> &mdash; Do you have Paris recommendations? Have you ever been?', active: false },
+      { avatar: 'https://i.ytimg.com/vi/DOC8QUKbzwo/hqdefault.jpg', title: 'Birthday gift', subtitle: '<b>Trevor Hansen</b> &mdash; Have any ideas about what we should get Heidi for her birthday?', active: false },
+      { avatar: 'https://redcdn.net/hpimg4/pics/845563hqdefault.jpg', title: 'Recipe to try', subtitle: '<b>Britta Holt</b> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.', active: false }
     ]
   }
 }

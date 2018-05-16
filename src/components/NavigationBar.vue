@@ -1,7 +1,7 @@
 <template>
   <v-toolbar app flat clipped-left color="#F1F4F3" height="80px">
     <a class="title" href="">
-      <img src="../assets/soco-logo.png" alt="" height="70%">
+      <img src="../assets/soco-logo.png" alt="" height="56px">
       <span class="socodarkgray--text hidden-xs-only">socoperator</span>
     </a>
     <v-spacer></v-spacer>
