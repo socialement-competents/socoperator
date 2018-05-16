@@ -3,14 +3,9 @@ import Vuex from 'vuex'
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import getters from '@/app/store/getters'
-import { Conversation } from '../../typings/types';
+import { State } from '@/types/customTypes'
 
 Vue.use(Vuex)
-
-interface State {
-  isLoggedIn: boolean
-  conversations: Conversation[]
-}
 
 const state: State = {
   isLoggedIn: (window &&
