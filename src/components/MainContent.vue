@@ -1,10 +1,10 @@
 <template>
   <v-container grid-list-md text-xs-center fluid class="no-padding">
     <v-layout row wrap>
-      <v-flex xs4>
+      <v-flex xs4 class="no-padding" style="z-index: 1;">
         <ConversationList :messages="messages"></ConversationList>
       </v-flex>
-      <v-flex xs8>
+      <v-flex xs8 class="no-padding">
         <MessageList></MessageList>
       </v-flex>
     </v-layout>

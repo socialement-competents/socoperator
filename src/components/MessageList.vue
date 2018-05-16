@@ -8,6 +8,7 @@
           </v-flex>
           <v-flex xs3 class="header-date">
             <span class="date">Lundi 1 janvier 2018</span>
+            <span>15h30</span>
           </v-flex>
         </v-layout>
       </v-container>
@@ -30,7 +31,6 @@ export default class MessageList extends Vue {
 
     this.message = { avatar: 'https://i.ytimg.com/vi/iHBDbvH0k9k/hqdefault.jpg', title: 'Brunch this weekend?', subtitle: "<b>Ali Connors</b> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?", active: false }
   }
-  
 }
 </script>
 
@@ -58,6 +58,10 @@ export default class MessageList extends Vue {
 
       .header-date {
         text-align: right;
+        display: flex;
+        flex-direction: column;
+        font-size: 14px;
+        font-weight: 200;
       }
     }
 

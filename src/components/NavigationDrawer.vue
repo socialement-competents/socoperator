@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app clipped flat width="240" class="drawer">
+  <v-navigation-drawer app clipped flat width="240" class="drawer" v-if="isLoggedIn">
     <v-btn color="socogreen" class="socobutton">test</v-btn>
     <div class="list">
       <button class="list-button" v-for="(button, key) in buttons" :key="`button-${key}`" v-on:click="activateButton(button)">
@@ -16,8 +16,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import { mapGetters } from 'vuex'
 
-@Component
+@Component({
+  computed: {
+    ...mapGetters(['isLoggedIn'])
+  }
+})
 export default class NavigationDrawer extends Vue {
   buttons: Array<Object>
 

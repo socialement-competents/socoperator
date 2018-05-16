@@ -1,5 +1,7 @@
 <template>
   <v-app>
+    <NavigationDrawer></NavigationDrawer>
+    <NavigationBar></NavigationBar>
     <v-content>
       <transition name="pageChange" mode="out-in">
         <router-view/>
@@ -11,8 +13,15 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
+import NavigationDrawer from '@/components/NavigationDrawer'
+import NavigationBar from '@/components/NavigationBar'
 
-@Component
+@Component({
+  components: {
+    'NavigationBar': NavigationBar,
+    'NavigationDrawer': NavigationDrawer
+  }
+})
 export default class App extends Vue {
   msg: string = 'Welcome to Your Vue.js App'
   name: string = 'app'

@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar app flat clipped-left color="#F1F4F3" height="80px">
+  <v-toolbar app flat clipped-left color="#F1F4F3" height="80px" v-if="isLoggedIn">
     <a class="title" href="">
       <img src="../assets/soco-logo.png" alt="" height="56px">
       <span class="socodarkgray--text hidden-xs-only">socoperator</span>
@@ -30,16 +30,27 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { User } from 'src/typings/types'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 @Component({
-  props: ['user'],
   methods: {
     ...mapActions(['logOut'])
+  },
+  computed: {
+    ...mapGetters(['isLoggedIn'])
   }
 })
 export default class NavigationBar extends Vue {
-  user: User | undefined
+  user: User
+
+  constructor () {
+    super()
+    this.user = {
+      firstname: 'Soco',
+      lastname: 'man',
+      image: 'https://i.ytimg.com/vi/n4FnINNtr74/hqdefault.jpg'
+    }
+  }
 }
 </script>
 

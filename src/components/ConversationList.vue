@@ -59,9 +59,7 @@ export default class ConversationList extends Vue {
 
 .conversation-list {
   background-color: #F6FAF9;
-  margin: 0 !important;
   height: 100vh;
-  padding: 0 !important;
   z-index: 1;
   box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.5);
 
