@@ -1,37 +1,32 @@
-import Vue, { AsyncComponent } from 'vue'
+import Vue from 'vue'
 import Router, { RouteConfig } from 'vue-router'
+import Login from '@/components/Login'
+import Main from '@/components/Main'
 
-const HelloWorld: AsyncComponent = (): any => import('@/components/HelloWorld')
-const Login: AsyncComponent = (): any => import('@/components/Login')
-const Main: AsyncComponent = (): any => import('@/components/Main')
+// const Login: AsyncComponent = (): any => import('@/components/Login')
+// const Main: AsyncComponent = (): any => import('@/components/Main')
 
 Vue.use(Router)
 
 const routes: RouteConfig[] = [
   {
     path: '/',
-    name: 'HelloWorld',
-    component: HelloWorld
+    name: 'Main',
+    component: Main,
+    meta: {
+      isAuthRequired: true
+    }
   },
   {
     path: '/login',
     component: Login,
     meta: {
-      conditionalRoute: true
-    }
-  },
-  {
-    path: '/app',
-    component: Main,
-    meta: {
-      isAuthRequired: true
+      isAuthRequired: false
     }
   }
 ]
 
 const router: Router = new Router({
-  mode: 'history',
-  base: '/',
   routes
 })
 
