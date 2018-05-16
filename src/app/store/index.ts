@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import getters from '@/app/store/getters'
-import { State } from '@/types/customTypes'
+import { State } from '@/typings/customTypes'
 
 Vue.use(Vuex)
 
