@@ -15,15 +15,26 @@
       <v-layout row justify-center>
         <v-flex xs10>
           <v-list three-line class="list">
-            <template v-for="(message, index) in messages">
-              <v-subheader v-if="message.header" :key="index">{{ message.header }}</v-subheader>
-              <v-list-tile v-else :key="message.title" avatar @click="select(message)" class="card-conversation" v-bind:class="{'active': message.active}">
+            <v-subheader>Today</v-subheader>
+            <template v-for="conv in convs">
+              <v-list-tile
+                :key="conv._id"
+                avatar
+                @click="$emit('selectedConv', conv._id)"
+                class="card-conversation"
+                :class="{ active: conv._id === selectedId }"
+              >
                 <v-list-tile-avatar>
-                  <img :src="message.avatar" class="image">
+                  <!-- TODO: utiliser https://randomuser.me/ -->
+                  <img src="https://i.ytimg.com/vi/iHBDbvH0k9k/hqdefault.jpg" class="image">
                 </v-list-tile-avatar>
                 <v-list-tile-content class="hidden-xs-only">
-                  <v-list-tile-title v-html="message.title"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="message.subtitle"></v-list-tile-sub-title>
+                  <v-list-tile-title v-if="conv.user">
+                    {{ conv.user.firstname }}&nbsp;{{ conv.user.lastname }}
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title v-if="conv.messages && conv.messages.length">
+                    {{ conv.messages[0].content }}
+                  </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
             </template>
@@ -40,19 +51,11 @@ import Component from 'vue-class-component'
 import { Conversation } from '../typings/types'
 
 @Component({
-  props: ['messages']
+  props: ['convs', 'selectedId']
 })
 export default class ConversationList extends Vue {
-  messages: Array<Conversation> | undefined
-
-  select (message: any) {
-    if (this.messages) {
-      this.messages.forEach((button: any) => {
-        button.active = false
-      })
-      message.active = true
-    }
-  }
+  convs: Array<Conversation> | undefined
+  selectedId: string | null | undefined
 }
 </script>
 

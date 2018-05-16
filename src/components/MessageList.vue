@@ -13,6 +13,9 @@
         </v-layout>
       </v-container>
     </div>
+    <div v-for="msg in messages" :key="msg._id">
+      {{ msg.content }}
+    </div>
   </div>
 </template>
 
@@ -22,28 +25,14 @@ import Component from 'vue-class-component'
 import { Message } from '../typings/types'
 
 @Component({
-  props: ['message']
+  props: ['messages']
 })
 export default class MessageList extends Vue {
-  message: Message | undefined
-
-  get msgOrDefault (): Object {
-    if (this.message) {
-      return this.message
-    }
-
-    return {
-      avatar: 'https://i.ytimg.com/vi/iHBDbvH0k9k/hqdefault.jpg',
-      title: 'Brunch this weekend?',
-      subtitle: "<b>Ali Connors</b> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
-      active: false
-    }
-  }
+  messages: Array<Message> | undefined
 }
 </script>
 
 <style scoped lang="scss">
-
 .message-container {
   background-color: #ECEFEE;
   padding: 0 !important;
@@ -75,5 +64,4 @@ export default class MessageList extends Vue {
 
   }
 }
-
 </style>
