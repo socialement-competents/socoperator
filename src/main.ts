@@ -23,7 +23,7 @@ const httpLink = createHttpLink({
 })
 
 const wsLink = new WebSocketLink({
-  uri: process.env.SERVER_URL || 'ws://localhost:3000/subscriptions',
+  uri: process.env.SERVER_URL_SUB || 'ws://localhost:3000/subscriptions',
   options: {
     reconnect: true
   }
