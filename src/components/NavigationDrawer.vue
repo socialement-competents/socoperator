@@ -30,8 +30,10 @@ export default class NavigationDrawer extends Vue {
     super()
 
     this.buttons = [
-      { title: 'Socotest', icon: 'add', active: true },
-      { title: 'Socotest', icon: 'add', active: false }
+      { title: 'Mes conversations', icon: 'add', active: true },
+      { title: 'Conversations dispo', icon: 'add', active: false },
+      { title: 'Mon profil', icon: 'add', active: false },
+      { title: 'Mes sococoins', icon: 'add', active: false }
     ]
   }
 
