@@ -8,12 +8,16 @@ const mutations: MutationTree<any> = {
   [TYPES.RECEIVED_CONVERSATIONS] (state, conversations: Conversation): void {
     state.conversations = conversations
   },
-  [TYPES.REQUEST_LOGIN] (state): void {
-    state.isLoggedIn = false
-  },
   [TYPES.RECEIVED_LOGIN] (state, user: User): void {
     state.isLoggedIn = true
+    console.log(user)
     state.user = user
+  },
+  [TYPES.REQUEST_LOGIN] (state): void {
+    state.loginError = false
+  },
+  [TYPES.LOGIN_ERROR] (state): void {
+    state.loginError = true
   },
   [TYPES.LOG_OUT] (state): void {
     state.isLoggedIn = false
