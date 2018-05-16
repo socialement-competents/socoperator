@@ -13,8 +13,8 @@
           <v-list-tile>
             <v-list-tile-title>test</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile>
-            <v-list-tile-title>test</v-list-tile-title>
+          <v-list-tile @click.stop="logOut">
+            <v-list-tile-title>Se désoconnecter</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
@@ -30,9 +30,13 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { User } from 'src/typings/types'
+import { mapActions } from 'vuex'
 
 @Component({
-  props: ['user']
+  props: ['user'],
+  methods: {
+    ...mapActions(['logOut'])
+  }
 })
 export default class NavigationBar extends Vue {
   user: User | undefined

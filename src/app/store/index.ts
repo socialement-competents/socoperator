@@ -3,15 +3,16 @@ import Vuex from 'vuex'
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import getters from '@/app/store/getters'
+import { State } from '@/typings/customTypes'
 
 Vue.use(Vuex)
 
-interface State {
-  login: boolean
-}
-
 const state: State = {
-  login: false
+  isLoggedIn: (window &&
+    window.localStorage &&
+    !!window.localStorage.getItem('token')) ||
+    false,
+  conversations: []
 }
 
 export default new Vuex.Store({
