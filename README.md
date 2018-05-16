@@ -5,7 +5,7 @@
 [![Code quality with Codacy](https://img.shields.io/codacy/grade/b5ce7b8a85cc4881acb74a2746a653b8.svg)](https://app.codacy.com/app/socialementcompetentsbot/socoperator)
 ![No license](https://img.shields.io/github/license/socialement-competents/socoperator.svg)
 [![CircleCI](https://img.shields.io/docker/pulls/socialementcompetents/socoperator.svg)](https://hub.docker.com/r/socialementcompetents/socoperator/)
-
+ 
 # socoperator
 
 > Hackaton front-end template with Vue.js, TypeScript, GraphQL, JWT and some
