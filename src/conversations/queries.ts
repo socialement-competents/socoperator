@@ -6,9 +6,13 @@ query {
     _id
     user {
       _id
+      lastname
+      firstname
     }
     operator {
       _id
+      lastname
+      firstname
     }
     messages {
       content

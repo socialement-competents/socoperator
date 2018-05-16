@@ -6,6 +6,9 @@ import VueApollo from 'vue-apollo'
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
+import { split } from 'apollo-link'
 import fetch from 'unfetch'
 
 import App from '@/App.vue'
@@ -19,8 +22,26 @@ const httpLink = createHttpLink({
   fetch: fetch
 })
 
+const wsLink = new WebSocketLink({
+  uri: process.env.SERVER_URL || 'ws://localhost:3000/subscriptions',
+  options: {
+    reconnect: true,
+  },
+})
+
+const link = split(
+  // split based on operation type
+  ({ query }: any) => {
+    const definition = getMainDefinition(query)
+    return definition.kind === 'OperationDefinition' &&
+    definition.operation === 'subscription'
+  },
+  wsLink,
+  httpLink
+)
+
 export const apolloClient = new ApolloClient({
-  link: httpLink,
+  link: link,
   cache: new InMemoryCache(),
   connectToDevTools: true
 })

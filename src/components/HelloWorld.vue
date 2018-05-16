@@ -14,13 +14,13 @@
           <template v-for="(conversation, index) in conversations.conversations">
             <v-subheader v-if="conversation.header" :key="conversation.header">{{ conversation.header }}</v-subheader>
             <v-divider v-else-if="conversation.divider" :inset="true" :key="index"></v-divider>
-            <v-list-tile v-else :key="conversation.__typename" avatar @click="">
+            <v-list-tile v-else :key="conversation._id" avatar @click="">
               <v-list-tile-avatar>
                 <img :src="conversation.avatar">
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title>{{conversation.__typename}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{conversation.content}}</v-list-tile-sub-title>
+                <v-list-tile-title>{{conversation.user.firstname}} {{conversation.user.lastname}}</v-list-tile-title>
+                <v-list-tile-sub-title v-if="conversation.messages[0]">{{conversation.messages[0].content || ''}}</v-list-tile-sub-title>
               </v-list-tile-content>
             </v-list-tile>
           </template>
