@@ -4,6 +4,7 @@ import TYPES from '@/app/store/types'
 import { User, Conversation } from '../../typings/types'
 import { LoginPayload, LoginData } from '../../typings/customTypes'
 import { apolloClient } from '../../main'
+import router from '@/app/router'
 import { GET_CONVERSATIONS } from '../../conversations/queries'
 import { LOGIN } from '../../users/queries'
 
@@ -23,7 +24,20 @@ const actions: ActionTree<any, any> = {
       }
     })
     window.localStorage.setItem('token', response.data.token)
+    setTimeout(() => router.push({
+      path: '/'
+    }), 2000)
+
     commit(TYPES.RECEIVED_LOGIN, response.data)
+  },
+  logOut ({ commit }) {
+    try {
+      window.localStorage.removeItem('token')
+    } catch (e) {}
+    router.push({
+      path: '/login'
+    })
+    commit(TYPES.LOG_OUT)
   }
 }
 
