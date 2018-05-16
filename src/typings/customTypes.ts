@@ -39,6 +39,6 @@ export type GetAllConversationsData = {
 export interface State {
   isLoggedIn: boolean;
   conversations: Conversation[];
-  loginError: boolean;
+  loginError: string | undefined;
   user: User | undefined;
 }

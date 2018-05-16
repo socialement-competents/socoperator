@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import actions from '@/app/store/actions'
 import mutations from '@/app/store/mutations'
 import getters from '@/app/store/getters'
-import { State } from '@/typings/customTypes'
+import { State } from '../../typings/customTypes'
 
 Vue.use(Vuex)
 
@@ -13,7 +13,7 @@ const state: State = {
     !!window.localStorage.getItem('token')) ||
     false,
   conversations: [],
-  loginError: false,
+  loginError: undefined,
   user: undefined
 }
 

@@ -16,7 +16,7 @@
         <v-flex xs10>
           <v-list three-line class="list">
             <v-subheader>Today</v-subheader>
-            <template v-for="conv in convs">
+            <template v-for="conv in updatedConvs">
               <v-list-tile
                 :key="conv._id"
                 avatar
@@ -25,8 +25,7 @@
                 :class="{ active: conv._id === selectedId }"
               >
                 <v-list-tile-avatar>
-                  <!-- TODO: utiliser https://randomuser.me/ -->
-                  <img src="https://i.ytimg.com/vi/iHBDbvH0k9k/hqdefault.jpg" class="image">
+                  <img :src="conv.user.image" class="image">
                 </v-list-tile-avatar>
                 <v-list-tile-content class="hidden-xs-only">
                   <v-list-tile-title v-if="conv.user">
@@ -55,12 +54,38 @@ import { Conversation } from '../typings/types'
 })
 export default class ConversationList extends Vue {
   convs: Array<Conversation> | undefined
+  updatedConvs: Array<Conversation> = []
   selectedId: string | null | undefined
+
+  created () {
+    this.updateConv()
+  }
+
+  updateConv () {
+    if (!this.convs) {
+      this.updatedConvs = []
+      return
+    }
+
+    this.updatedConvs = this.convs.map((conv) => {
+      if (conv && conv.user && conv.user.image) {
+        return conv
+      }
+      const id = Math.floor((Math.random() * 100))
+      const gender = Math.random() > 0.5 ? 'men' : 'women'
+      const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
+      return {
+        ...conv,
+        user: {
+          image: url
+        }
+      }
+    })
+  }
 }
 </script>
 
 <style scoped lang="scss">
-
 .conversation-list {
   background-color: #F6FAF9;
   height: 100vh;

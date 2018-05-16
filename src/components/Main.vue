@@ -19,8 +19,8 @@ export default class Main extends Vue {
     super()
     this.getConversations()
   }
-  getConversations () {
-    // await this.$store.dispatch('getAllConversations')
+  async getConversations () {
+    await this.$store.dispatch('getAllConversations')
   }
 }
 </script>
