@@ -3,7 +3,7 @@ services:
   back:
     image: socialementcompetents/backathon
     ports:
-      - 3333:3000
+      - 3000:3000
     environment:
       - MONGODB_URI=mongodb://mongo:27017/test
       - EMAIL_HOST=mailcatcher
@@ -22,7 +22,8 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - SERVER_URL=http://back:333/graphql
+      - SERVER_URL=http://back:3000/graphql
+      - SERVER_URL_SUB=wh://back:3000/subscriptions
     ports:
       - 8080:80
     depends_on: 

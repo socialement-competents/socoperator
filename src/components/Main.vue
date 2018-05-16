@@ -32,6 +32,10 @@ export default class Main extends Vue {
       lastname: 'man',
       image: 'https://i.ytimg.com/vi/n4FnINNtr74/hqdefault.jpg'
     }
+    this.getConversations()
+  }
+  async getConversations () {
+    await this.$store.dispatch('getAllConversations')
   }
 }
 </script>

@@ -1,12 +1,28 @@
-import Vue from 'vue'
+import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 import Main from '@/components/Main'
-import { mount } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 
-Vue.use(Vuetify)
+const localVue = createLocalVue()
+
+localVue.use(Vuex)
+localVue.use(Vuetify)
 
 describe('Main.vue', () => {
-  it('should do nothing', () => {
-    mount(Main)
+  let store: Object
+  let getAllConvs
+  beforeEach(() => {
+    getAllConvs = jest.fn()
+    store = new Vuex.Store({
+      state: {},
+      actions: {
+        getAllConversations: getAllConvs
+      },
+      getters: {}
+    })
+  })
+  it('dispatches getAllConversations', () => {
+    shallowMount(Main, { store, localVue })
+    expect(getAllConvs).toBeCalled()
   })
 })
