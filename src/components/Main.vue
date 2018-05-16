@@ -1,7 +1,8 @@
 <template>
   <div class="main">
-    <NavigationBar :user="user"></NavigationBar>
     <NavigationDrawer></NavigationDrawer>
+    <NavigationBar :user="user"></NavigationBar>
+    <MainContent class="correct-height"></MainContent>
   </div>
 </template>
 
@@ -11,11 +12,13 @@ import Component from 'vue-class-component'
 import { User } from 'src/typings/types'
 import NavigationBar from '@/components/NavigationBar'
 import NavigationDrawer from '@/components/NavigationDrawer'
+import MainContent from '@/components/MainContent'
 
 @Component({
   components: {
     'NavigationBar': NavigationBar,
-    'NavigationDrawer': NavigationDrawer
+    'NavigationDrawer': NavigationDrawer,
+    'MainContent': MainContent
   }
 })
 export default class Main extends Vue {
@@ -38,6 +41,10 @@ export default class Main extends Vue {
 .main {
   height: 100vh;
   overflow: hidden;
+
+  .correct-height {
+    height: 60vh;
+  }
 }
 
 </style>

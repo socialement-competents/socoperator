@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar flat color="#F1F4F3" height="80px">
+  <v-toolbar app flat clipped-left color="#F1F4F3" height="80px">
     <a class="title" href="">
       <img src="../assets/soco-logo.png" alt="" height="70%">
       <span class="socodarkgray--text hidden-xs-only">socoperator</span>
@@ -8,9 +8,7 @@
     <v-toolbar-items class="item-profile">
       <span>{{user.firstname}} {{user.lastname}}</span>
       <v-menu auto class="arrow-down-button">
-        <button slot="activator">
-          <img src="../assets/down-arrow.svg" alt="">
-        </button>
+        <v-icon slot="activator">keyboard_arrow_down</v-icon>
         <v-list>
           <v-list-tile>
             <v-list-tile-title>test</v-list-tile-title>
@@ -21,8 +19,8 @@
         </v-list>
       </v-menu>
       <div class="profile-image" v-bind:class="{'placeholder': !user.image}">
-        <img v-if="user.image" :src="user.image" alt="avatar">
-        <img v-else src="../assets/avatar.svg" alt="avatar">
+        <img v-if="user.image" :src="user.image" alt="avatar" class="image">
+        <v-icon v-else class="image">face</v-icon>
       </div>
     </v-toolbar-items>
   </v-toolbar>
@@ -69,10 +67,6 @@ export default class NavigationBar extends Vue {
     button {
       outline: none;
     }
-
-    img {
-      height: 14px;
-    }
   }
 
   .item-profile {
@@ -84,7 +78,7 @@ export default class NavigationBar extends Vue {
       height: 60%;
       width: auto;
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-      img {
+      .image {
         object-fit: cover;
         height: 48px;
         width: 48px;
@@ -95,9 +89,9 @@ export default class NavigationBar extends Vue {
     .placeholder {
       background-color: #d0d0d0;
       padding: 5px;
-      img {
-        height: 100%;
-        width: auto;
+      .image {
+        height: 38px;
+        width: 38px;
         border-radius: 0;
       }
     }
