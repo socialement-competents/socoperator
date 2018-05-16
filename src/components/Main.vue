@@ -31,8 +31,8 @@ export default class Main extends Vue {
     }
     this.getConversations()
   }
-  getConversations () {
-    this.$store.dispatch('getAllConversations')
+  async getConversations () {
+    await this.$store.dispatch('getAllConversations')
   }
 }
 </script>

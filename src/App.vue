@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <v-content>
-      <router-view/>
+      <transition name="pageChange" mode="out-in">
+        <router-view/>
+      </transition>
     </v-content>
   </v-app>
 </template>
@@ -24,5 +26,18 @@ export default class App extends Vue {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+.pageChange-enter-active {
+  animation: scaleUp .7s ease both;
+}
+.pageChange-leave-active {
+  animation: fade .7s ease both;
+}
+@keyframes scaleUp {
+	from { opacity: 0; transform: scale(.8); }
+}
+@keyframes fade {
+  to { opacity: 0; }
 }
 </style>
