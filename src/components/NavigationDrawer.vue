@@ -2,18 +2,20 @@
   <v-navigation-drawer app clipped flat width="240" class="drawer" v-if="isLoggedIn">
     <v-btn color="socogreen" class="socobutton">test</v-btn>
     <div class="list">
-      <button
+      <router-link
         class="list-button"
         v-for="button in buttons"
         :key="button.title"
-        @click.stop="select(button)"
+        :to="button.link"
+        @click.stop="select"
       >
+        <!-- @click.stop="select(button)" -->
         <div class="vertical-selected" v-if="selectedButton === button.title"></div>
         <div class="content">
           <v-icon class="socobutton-icon">{{ button.icon }}</v-icon>
           <span>{{ button.title }}</span>
         </div>
-      </button>
+      </router-link>
     </div>
   </v-navigation-drawer>
 </template>
@@ -27,6 +29,7 @@ import { mainRouteName, availableRouteName, profileRouteName } from '../app/cons
 type Button = {
   title: string;
   link: string;
+  routeName: string;
   icon: string;
 }
 
@@ -43,15 +46,15 @@ export default class NavigationDrawer extends Vue {
     super()
 
     this.buttons = [
-      { title: 'Mes conversations', link: mainRouteName, icon: 'add' },
-      { title: 'Conversations dispo', link: availableRouteName, icon: 'add' },
-      { title: 'Mon profil', link: profileRouteName, icon: 'add' }
+      { title: 'Mes conversations', link: '/', routeName: mainRouteName, icon: 'add' },
+      { title: 'Conversations dispo', link: '/available', routeName: availableRouteName, icon: 'add' },
+      { title: 'Mon profil', link: '/profile', routeName: profileRouteName, icon: 'add' }
     ]
   }
 
   select (button: Button) {
     this.selectedButton = button.title
-    this.$router.push({ name: button.link })
+    // this.$router.push({ name: button.routeName })
   }
 }
 </script>
@@ -84,6 +87,7 @@ export default class NavigationDrawer extends Vue {
       align-items: center;
       outline: none;
       margin: 20px 0 0 0;
+      text-decoration: none;
 
       .vertical-selected {
         position: absolute;
