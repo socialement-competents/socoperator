@@ -46,10 +46,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import axios from 'axios'
 import { mapGetters } from 'vuex'
 import Component from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
-import { Conversation } from '../typings/types'
+import { Conversation, User } from '../typings/types'
 
 @Component({
   props: ['selectedId'],
@@ -60,28 +61,48 @@ export default class ConversationList extends Vue {
   selectedId: string | null | undefined
 
   @Watch('conversations')
-  updateConv (val: Array<Conversation>) {
+  async updateConv (val: Array<Conversation>) {
     if (!val) {
       this.updatedConvs = []
       return
     }
 
-    this.updatedConvs = val.map((conv) => {
-      if (conv.user && conv.user.image) {
-        return conv
-      }
+    let updatedConvs: Array<Conversation> = []
 
-      const id = Math.floor((Math.random() * 100))
-      const gender = Math.random() > 0.5 ? 'men' : 'women'
-      const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
-      return {
-        ...conv,
-        user: {
-          ...conv.user,
-          image: url
+    for (let i = 0; i < val.length; i++) {
+      let generatedUser: User
+      let gender: string
+      try {
+        const uinamesUrl = 'https://uinames.com/api/?region=france'
+        const response = await axios.get(uinamesUrl)
+        generatedUser = {
+          firstname: response.data.name,
+          lastname: response.data.surname
         }
+        gender = response.data.gender === 'female' ? 'women' : 'men'
+      } catch (e) {
+        console.error(e)
+        generatedUser = {
+          firstname: 'soco',
+          lastname: 'man'
+        }
+        gender = Math.random() > 0.5 ? 'men' : 'women'
       }
-    })
+      const id = Math.floor((Math.random() * 100))
+      const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
+      generatedUser.image = url
+      updatedConvs = [
+        ...updatedConvs,
+        {
+          ...val[i],
+          user: {
+            ...val[i].user,
+            ...generatedUser
+          }
+        }
+      ]
+    }
+    this.updatedConvs = updatedConvs
   }
 }
 </script>

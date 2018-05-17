@@ -1,19 +1,23 @@
 import { ActionTree } from 'vuex'
 
-import TYPES from '@/app/store/types'
-import { User } from '../../typings/types'
+import TYPES from '../../app/store/types'
 import {
-  LoginPayload,
+  User,
+  LogInQueryArgs,
+  AddUserMutationArgs
+} from '../../typings/types'
+import {
   LoginData,
-  RegisterPayload,
   GetAllConversationsData,
-  RegisterData
+  RegisterData,
+  UserByIdData
 } from '../../typings/customTypes'
 import { apolloClient } from '../../main'
-import router from '@/app/router'
+import router from '../../app/router'
 import { GET_CONVERSATIONS } from '../../conversations/queries'
-import { LOGIN } from '../../users/queries'
+import { LOGIN, GET_USER_BY_ID } from '../../users/queries'
 import { REGISTER } from '../../users/mutations'
+import { EDESTADDRREQ } from 'constants';
 
 const actions: ActionTree<any, any> = {
   async getAllConversations ({ commit }, user: User) {
@@ -23,13 +27,12 @@ const actions: ActionTree<any, any> = {
       if (!result || !result.data || !result.data.conversations) {
         throw new Error('Error fetching the conversations')
       }
-      console.log(result.data.conversations.map(c => c.user && c.user.firstname))
       commit(TYPES.RECEIVED_CONVERSATIONS, result.data.conversations)
     } catch (e) {
       console.error(e)
     }
   },
-  async register ({ commit }, { email, password, firstname, lastname }: RegisterPayload) {
+  async register ({ commit }, { email, password, firstname, lastname }: AddUserMutationArgs) {
     try {
       const response = await apolloClient.mutate < RegisterData > ({
         mutation: REGISTER,
@@ -44,6 +47,7 @@ const actions: ActionTree<any, any> = {
         throw new Error('Error registering')
       }
       window.localStorage.setItem('token', response.data.addUser.token)
+      window.localStorage.setItem('userId', response.data.logIn._id)
       commit(TYPES.RECEIVED_LOGIN, response.data.addUser)
       router.push({
         path: '/'
@@ -53,7 +57,39 @@ const actions: ActionTree<any, any> = {
       commit(TYPES.LOGIN_ERROR, e.message)
     }
   },
-  async logIn ({ commit }, { email, password }: LoginPayload) {
+  async fetchUser ({ commit, state, dispatch }) {
+    if (state.user) {
+      return
+    }
+
+    const userId = window.localStorage.getItem('userId')
+
+    if (!userId || !window.localStorage.getItem('token')) {
+      dispatch('logOut')
+    }
+
+    const response = await apolloClient.query < UserByIdData > ({
+      query: GET_USER_BY_ID,
+      variables: {
+        id: userId
+      }
+    })
+
+    commit(TYPES.RECEIVED_LOGIN, response.data.userById)
+  },
+  async logIn ({ commit }, { email, password }: LogInQueryArgs) {
+    if (!email) {
+      commit(TYPES.LOGIN_ERROR, 'Le champ Email est obligatoire.')
+      return
+    }
+    if (!password) {
+      commit(TYPES.LOGIN_ERROR, 'Le champ Mot de passe est obligatoire.')
+      return
+    }
+    if (!email.match(/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i)) {
+      commit(TYPES.LOGIN_ERROR, `L'email n'a pas l'air valide.`)
+      return
+    }
     commit(TYPES.REQUEST_LOGIN)
     const response = await apolloClient.query < LoginData > ({
       query: LOGIN,
@@ -64,11 +100,11 @@ const actions: ActionTree<any, any> = {
     })
     try {
       if (!response.data || !response.data.logIn || !response.data.logIn.token) {
-        console.log('Invalid username or password')
+        console.error('Invalid username or password')
         throw new Error(JSON.stringify(response))
       }
-      console.log('user:', response.data.logIn)
       window.localStorage.setItem('token', response.data.logIn.token)
+      window.localStorage.setItem('userId', response.data.logIn._id)
       commit(TYPES.RECEIVED_LOGIN, response.data.logIn)
       router.push({
         path: '/'
@@ -82,11 +118,13 @@ const actions: ActionTree<any, any> = {
   logOut ({ commit }) {
     try {
       window.localStorage.removeItem('token')
-    } catch (e) {}
-    router.push({
-      path: '/login'
-    })
-    commit(TYPES.LOG_OUT)
+      window.localStorage.removeItem('userId')
+    } finally {
+      router.push({
+        path: '/login'
+      })
+      commit(TYPES.LOG_OUT)
+    }
   }
 }
 

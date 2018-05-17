@@ -5,22 +5,29 @@
       <span class="socodarkgray--text hidden-xs-only">socoperator</span>
     </a>
     <v-spacer></v-spacer>
-    <v-toolbar-items class="item-profile">
-      <span>{{user.firstname}} {{user.lastname}}</span>
+    <v-toolbar-items v-if="user" class="item-profile">
+      <span>{{ user.firstname | capitalize }} {{ user.lastname | capitalize }}</span>
       <v-menu auto class="arrow-down-button">
         <v-icon slot="activator">keyboard_arrow_down</v-icon>
         <v-list>
-          <v-list-tile>
+          <v-list-tile @click="console.log()">
             <v-list-tile-title>Options</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile @click="console.log()">
+            <v-list-tile-title>Supprimer mes données personnelles</v-list-tile-title>
           </v-list-tile>
           <v-list-tile @click.stop="logOut">
             <v-list-tile-title>Se désoconnecter</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
-      <div class="profile-image" v-bind:class="{'placeholder': !user.image}">
-        <img v-if="user.image" :src="user.image" alt="avatar" class="image">
-        <v-icon v-else class="image">face</v-icon>
+      <div class="profile-image" v-bind:class="{'placeholder': false}">
+        <img
+          :src="user.image || 'https://i.ytimg.com/vi/n4FnINNtr74/hqdefault.jpg'"
+          alt="avatar"
+          class="image"
+        />
+        <!-- <v-icon v-else class="image">face</v-icon> -->
       </div>
     </v-toolbar-items>
   </v-toolbar>
@@ -29,7 +36,6 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { User } from 'src/typings/types'
 import { mapActions, mapGetters } from 'vuex'
 
 @Component({
@@ -37,19 +43,21 @@ import { mapActions, mapGetters } from 'vuex'
     ...mapActions(['logOut'])
   },
   computed: {
-    ...mapGetters(['isLoggedIn'])
+    ...mapGetters(['isLoggedIn', 'user'])
+  },
+  filters: {
+    capitalize: (value: string) => value && value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
   }
 })
 export default class NavigationBar extends Vue {
-  user: User
-
-  constructor () {
-    super()
-    this.user = {
-      firstname: 'Soco',
-      lastname: 'man',
-      image: 'https://i.ytimg.com/vi/n4FnINNtr74/hqdefault.jpg'
-    }
+  async created () {
+    await this.fetchUser()
+  }
+  async updated () {
+    await this.fetchUser()
+  }
+  async fetchUser () {
+    await this.$store.dispatch('fetchUser')
   }
 }
 </script>
