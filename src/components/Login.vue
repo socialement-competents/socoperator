@@ -62,7 +62,7 @@
                 class="login-button"
                 color="socolightblue"
                 dark
-                @click="isRegistering = false"
+                @click.stop="isRegistering = false"
               >Retour</v-btn>
             </v-flex>
             <v-flex xs6>
@@ -70,7 +70,7 @@
                 class="login-button"
                 color="socogreen"
                 dark
-                @click="register({ email, password, firstname, lastname })"
+                @click.stop="register({ email, password, firstname, lastname })"
               >Valider</v-btn>
             </v-flex>
           </v-layout>
@@ -80,7 +80,7 @@
                 class="login-button"
                 color="socolightblue"
                 dark
-                @click="isRegistering = true"
+                @click.stop="isRegistering = true"
               >S'enregister</v-btn>
             </v-flex>
             <v-flex xs6>
@@ -88,7 +88,7 @@
                 class="login-button"
                 color="socogreen"
                 dark
-                @click="logIn({ email, password })"
+                @click.stop="logIn({ email, password })"
               >Soconnecter</v-btn>
             </v-flex>
           </v-layout>
