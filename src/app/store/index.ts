@@ -23,7 +23,8 @@ const state: State = {
     balance: undefined,
     error: undefined
   },
-  contractInstanceGetter: undefined
+  contractInstanceGetter: undefined,
+  error: undefined
 }
 
 export default new Vuex.Store({

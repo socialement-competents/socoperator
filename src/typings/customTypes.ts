@@ -48,4 +48,5 @@ export interface State {
     error: any | undefined;
   };
   contractInstanceGetter: any | undefined;
+  error: string | undefined;
 }

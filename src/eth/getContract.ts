@@ -1,5 +1,5 @@
 import Web3 from 'web3'
-import { address, abi } from './lotteryContract'
+import { address, abi } from './socoCoinContract'
 
 const getContract = () => new Promise((resolve, reject) => {
   const w: any = window

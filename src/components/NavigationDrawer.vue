@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app clipped flat width="240" class="drawer" v-if="isLoggedIn">
-    <v-btn color="socogreen" class="socobutton">34 SocoCoins</v-btn>
+    <SocoCoins />
     <div class="list">
       <button
         class="list-button"
@@ -22,6 +22,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { mapGetters } from 'vuex'
+import SocoCoins from './SocoCoins'
 
 type Button = {
   title: string;
@@ -32,6 +33,9 @@ type Button = {
 @Component({
   computed: {
     ...mapGetters(['isLoggedIn'])
+  },
+  components: {
+    SocoCoins
   }
 })
 export default class NavigationDrawer extends Vue {
@@ -45,7 +49,6 @@ export default class NavigationDrawer extends Vue {
       { title: 'Mes conversations', link: '/', icon: 'chat' },
       { title: 'Conversations dispo', link: '/available', icon: 'chat_bubble_outline' },
       { title: 'Mon profil', link: '/profile', icon: 'face' }
-      // { title: 'Mes SocoCoins', link: '/tokens', icon: 'add' }
     ]
   }
 
@@ -60,15 +63,6 @@ export default class NavigationDrawer extends Vue {
 
 .drawer {
   box-shadow: 2px 0 12px 4px rgba(202, 202, 202, 0.5);
-
-  .socobutton {
-    margin: 24px;
-    width: calc(100% - 48px);
-    height: 50px;
-    box-shadow: 0 7px 13px 0 rgba(2, 250, 168, 0.5);
-    border-radius: 8px;
-    color: #fff;
-  }
 
   .list {
     display: flex;
