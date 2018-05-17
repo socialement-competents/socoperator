@@ -39,6 +39,7 @@ const routes: RouteConfig[] = [
 ]
 
 const router: Router = new Router({
+  mode: 'history',
   routes
 })
 
