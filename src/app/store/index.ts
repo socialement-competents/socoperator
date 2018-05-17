@@ -14,7 +14,8 @@ const state: State = {
     false,
   conversations: [],
   loginError: undefined,
-  user: undefined
+  user: undefined,
+  conversation: undefined
 }
 
 export default new Vuex.Store({

@@ -56,7 +56,7 @@ import { Conversation, User } from '../typings/types'
 
 @Component({
   props: ['selectedId'],
-  computed: mapGetters(['conversations'])
+  computed: mapGetters(['conversations', 'conversation'])
 })
 export default class ConversationList extends Vue {
   nameFilter: string = ''

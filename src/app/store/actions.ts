@@ -17,6 +17,7 @@ import router from '../../app/router'
 import { GET_CONVERSATIONS } from '../../conversations/queries'
 import { LOGIN, GET_USER_BY_ID } from '../../users/queries'
 import { REGISTER } from '../../users/mutations'
+import { ADD_MESSAGE } from '../../messages/mutations'
 
 const actions: ActionTree<any, any> = {
   async getAllConversations ({ commit }, user: User) {
@@ -125,6 +126,29 @@ const actions: ActionTree<any, any> = {
       })
       commit(TYPES.LOG_OUT)
     }
+  },
+  async addMessage ({ commit }, { conversationId, content, userId }) {
+    try {
+      commit(TYPES.REQUEST_ADD_MESSAGE)
+      const response = await apolloClient.mutate({
+        mutation: ADD_MESSAGE,
+        variables: {
+          conversationId,
+          content,
+          userId
+        }
+      })
+      if (!response || !response.data || !response.data.addMessage || !response.data.addMessage._id) {
+        throw new Error('Error sending message')
+      }
+      commit(TYPES.RECEIVED_ADD_MESSAGE, response.data.addMessage)
+    } catch (e) {
+      console.error(e)
+      commit(TYPES.ADD_MESSAGE_ERROR, e)
+    }
+  },
+  selectConversation ({ commit }, conversation) {
+    commit(TYPES.SELECT_CONVERSATION, conversation)
   }
 }
 

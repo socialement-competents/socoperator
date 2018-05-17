@@ -18,12 +18,14 @@ import store from './app/store'
 Vue.config.productionTip = false
 
 const httpLink = createHttpLink({
-  uri: process.env.SERVER_URL || 'https://soco-back.herokuapp.com/graphql',
+  // uri: process.env.SERVER_URL || 'https://soco-back.herokuapp.com/graphql',
+  uri: process.env.SERVER_URL || 'http://172.20.10.2:3000/graphql',
   fetch: fetch
 })
 
 const wsLink = new WebSocketLink({
-  uri: process.env.SERVER_URL_SUB || 'wss://soco-back.herokuapp.com/subscriptions',
+  // uri: process.env.SERVER_URL_SUB || 'wss://soco-back.herokuapp.com/subscriptions',
+  uri: process.env.SERVER_URL || 'ws://172.20.10.2:3000/subscriptions',
   options: {
     reconnect: true
   }

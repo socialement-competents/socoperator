@@ -8,7 +8,10 @@
         ></ConversationList>
       </v-flex>
       <v-flex xs8 class="no-padding">
-        <MessageList :messages="selectedMessages"></MessageList>
+        <MessageList 
+          :selectedId="selectedId"
+          :messages="selectedMessages"
+        ></MessageList>
       </v-flex>
     </v-layout>
   </v-container>

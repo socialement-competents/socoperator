@@ -13,6 +13,9 @@ const getters: GetterTree<any, any> = {
   },
   loginError (state): string | undefined {
     return state.loginError
+  },
+  conversation (state): Conversation | undefined {
+    return state.conversation
   }
 }
 

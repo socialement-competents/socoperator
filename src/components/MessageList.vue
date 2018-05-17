@@ -18,7 +18,7 @@
         <v-flex xs12>
           <article>
             <div v-for="msg in messages" :key="msg._id">
-              <p v-if="msg._id === user._id" class="from-me last">{{ msg.content }}</p>
+              <p v-if="msg.user._id === user._id" class="from-me last">{{ msg.content }}</p>
               <p v-else class="to-me last">{{ msg.content }}</p>
             </div>
           </article>
@@ -30,7 +30,7 @@
         <v-layout row wrap>
           <v-flex xs12>
             <div class="text-area-container">
-              <textarea rows="2" placeholder="Ecrivez quelque chose..."></textarea>
+              <textarea ref="socomessage" rows="2" placeholder="Ecrivez quelque chose..." @keydown.enter.stop.prevent="addMessage"></textarea>
             </div>
           </v-flex>
         </v-layout>
@@ -42,17 +42,42 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { Message } from '../typings/types'
+import { Message, User } from '../typings/types'
 import { mapGetters } from 'vuex'
+import gql from 'graphql-tag'
+import { throws } from 'assert';
 
 @Component({
-  props: ['messages'],
+  props: ['messages', 'selectedId'],
   computed: {
     ...mapGetters(['user'])
   }
 })
 export default class MessageList extends Vue {
   messages: Array<Message> | undefined
+  selectedId: string | undefined
+  user: User | undefined
+
+  async addMessage() {
+    try {
+      const result = await this.$apollo.mutate({
+        mutation: gql`mutation ($selectedId: String!, $content: String!, $user: String!) {
+          addMessage(conversationId: $selectedId, content: $content, userId: $user) {
+            _id
+            content
+            isRead
+            createdAt
+          }
+        }`,
+        variables: {
+          selectedId: this.selectedId,
+          content: (<any>this.$refs.socomessage).value,
+          user: this.user ? this.user._id : ''
+        }
+      })
+      this.messages ? this.messages.concat([result.data.addMessage]) : null
+    } catch (e) {} 
+  }
 }
 </script>
 

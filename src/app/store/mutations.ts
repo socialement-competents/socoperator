@@ -20,6 +20,9 @@ const mutations: MutationTree<any> = {
   },
   [TYPES.LOG_OUT] (state): void {
     state.isLoggedIn = false
+  },
+  [TYPES.SELECT_CONVERSATION] (state, conversation): void {
+    state.conversation = conversation
   }
 }
 

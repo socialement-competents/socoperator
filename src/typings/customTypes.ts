@@ -39,4 +39,5 @@ export interface State {
   conversations: Conversation[];
   loginError: string | undefined;
   user: User | undefined;
+  conversation: Conversation | undefined;
 }
