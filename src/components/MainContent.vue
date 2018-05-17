@@ -3,9 +3,7 @@
     <v-layout row wrap>
       <v-flex xs4 class="no-padding" style="z-index: 1;">
         <ConversationList
-          v-if="conversations"
           @selectedConv="onSelectedConv"
-          :convs="conversations"
           :selectedId="selectedId"
         ></ConversationList>
       </v-flex>
@@ -38,8 +36,7 @@ export default class MainContent extends Vue {
   selectedMessages: Array<Message | null | undefined> | undefined | null = []
 
   @Watch('conversations')
-  conversationsChanged (val: Array<Conversation>): void {
-    console.log(val)
+  conversationsChanged (val: Array<Conversation>, old: any): void {
     if (!val.length) {
       return
     }

@@ -32,7 +32,7 @@
                     {{ conv.user.firstname }}&nbsp;{{ conv.user.lastname }}
                   </v-list-tile-title>
                   <v-list-tile-sub-title v-if="conv.messages && conv.messages.length">
-                    {{ conv.messages[0].content }}
+                    {{ conv.messages[conv.messages.length - 1].content }}
                   </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
@@ -46,28 +46,27 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 import Component from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
 import { Conversation } from '../typings/types'
 
 @Component({
-  props: ['convs', 'selectedId']
+  props: ['selectedId'],
+  computed: mapGetters(['conversations'])
 })
 export default class ConversationList extends Vue {
-  convs: Array<Conversation> | undefined
   updatedConvs: Array<Conversation> = []
   selectedId: string | null | undefined
 
-  created () {
-    this.updateConv()
-  }
-
-  updateConv () {
-    if (!this.convs) {
+  @Watch('conversations')
+  updateConv (val: Array<Conversation>) {
+    if (!val) {
       this.updatedConvs = []
       return
     }
 
-    this.updatedConvs = this.convs.map((conv) => {
+    this.updatedConvs = val.map((conv) => {
       if (conv && conv.user && conv.user.image) {
         return conv
       }
@@ -77,6 +76,7 @@ export default class ConversationList extends Vue {
       return {
         ...conv,
         user: {
+          ...conv.user,
           image: url
         }
       }

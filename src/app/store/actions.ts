@@ -23,6 +23,7 @@ const actions: ActionTree<any, any> = {
       if (!result || !result.data || !result.data.conversations) {
         throw new Error('Error fetching the conversations')
       }
+      console.log(result.data.conversations.map(c => c.user && c.user.firstname))
       commit(TYPES.RECEIVED_CONVERSATIONS, result.data.conversations)
     } catch (e) {
       console.error(e)
@@ -62,7 +63,7 @@ const actions: ActionTree<any, any> = {
       }
     })
     try {
-      console.log(response)
+      console.log('user:', response.data.logIn)
       if (!response.data || !response.data.logIn || !response.data.logIn.token) {
         console.log('Invalid username or password')
         throw new Error(JSON.stringify(response))
