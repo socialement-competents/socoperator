@@ -29,12 +29,18 @@ export default class App extends Vue {
 </script>
 
 <style>
+
+html, body, main.content, .main>.container {
+  height: 100%;
+}
+
 #app {
   font-family: 'Raleway', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100%;
 }
 
 .pageChange-enter-active {

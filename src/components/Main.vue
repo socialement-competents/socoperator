@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <MainContent class="correct-height"></MainContent>
+    <MainContent></MainContent>
   </div>
 </template>
 
@@ -28,12 +28,8 @@ export default class Main extends Vue {
 <style scoped lang="scss">
 
 .main {
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
-
-  .correct-height {
-    height: 60vh;
-  }
 }
 
 </style>

@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-md text-xs-center fluid class="no-padding">
-    <v-layout row wrap>
-      <v-flex xs4 class="no-padding" style="z-index: 1;">
+    <v-layout row wrap style="height: 100%;">
+      <v-flex xs4 class="no-padding" style="z-index: 1; height: 100%;">
         <ConversationList
           @selectedConv="onSelectedConv"
           :selectedId="selectedId"
