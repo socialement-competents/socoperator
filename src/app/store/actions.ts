@@ -1,10 +1,12 @@
 import { ActionTree } from 'vuex'
+import axios from 'axios'
 
 import TYPES from '../../app/store/types'
 import {
   User,
   LogInQueryArgs,
-  AddUserMutationArgs
+  AddUserMutationArgs,
+  Conversation
 } from '../../typings/types'
 import {
   LoginData,
@@ -18,6 +20,49 @@ import { GET_CONVERSATIONS } from '../../conversations/queries'
 import { LOGIN, GET_USER_BY_ID } from '../../users/queries'
 import { REGISTER } from '../../users/mutations'
 
+const mockConvUsers = async (convs: Array<Conversation>) => {
+  if (!convs) {
+    return []
+  }
+
+  let updatedConvs: Array<Conversation> = []
+
+  await Promise.all(convs.map(async (conv, i) => {
+    let generatedUser: User
+    let gender: string
+    try {
+      const uinamesUrl = 'https://uinames.com/api/?region=france'
+      const response = await axios.get(uinamesUrl)
+      generatedUser = {
+        firstname: response.data.name,
+        lastname: response.data.surname
+      }
+      gender = response.data.gender === 'female' ? 'women' : 'men'
+    } catch (e) {
+      console.error(e)
+      generatedUser = {
+        firstname: 'soco',
+        lastname: 'man'
+      }
+      gender = Math.random() > 0.5 ? 'men' : 'women'
+    }
+    const id = Math.floor((Math.random() * 100))
+    const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
+    generatedUser.image = url
+    updatedConvs = [
+      ...updatedConvs,
+      {
+        ...convs[i],
+        user: {
+          ...convs[i].user,
+          ...generatedUser
+        }
+      }
+    ]
+  }))
+  return updatedConvs
+}
+
 const actions: ActionTree<any, any> = {
   async getAllConversations ({ commit }, user: User) {
     commit(TYPES.REQUEST_CONVERSATIONS)
@@ -26,7 +71,9 @@ const actions: ActionTree<any, any> = {
       if (!result || !result.data || !result.data.conversations) {
         throw new Error('Error fetching the conversations')
       }
-      commit(TYPES.RECEIVED_CONVERSATIONS, result.data.conversations)
+
+      const mockedConversations = await mockConvUsers(result.data.conversations)
+      commit(TYPES.RECEIVED_CONVERSATIONS, mockedConversations)
     } catch (e) {
       console.error(e)
     }

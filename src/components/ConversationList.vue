@@ -48,19 +48,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import axios from 'axios'
 import { mapGetters } from 'vuex'
 import Component from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
-import { Conversation, User } from '../typings/types'
+import { Conversation } from '../typings/types'
 
 @Component({
   props: ['selectedId'],
   computed: mapGetters(['conversations'])
 })
 export default class ConversationList extends Vue {
+  conversations: any
   nameFilter: string = ''
-  updatedConvs: Array<Conversation> = []
   filteredConvs: Array<Conversation> = []
   selectedId: string | null | undefined
 
@@ -69,9 +68,14 @@ export default class ConversationList extends Vue {
     this.filterConvs()
   }
 
+  @Watch('conversations')
+  async updateConv () {
+    this.filterConvs()
+  }
+
   filterConvs () {
     if (this.nameFilter.length < 2) {
-      this.filteredConvs = this.updatedConvs
+      this.filteredConvs = this.conversations
     }
 
     // Normalise une string (ÈêéÊÈâÏù => eeeeeeaiu)
@@ -82,56 +86,10 @@ export default class ConversationList extends Vue {
 
     const normFilter = norm(this.nameFilter)
 
-    this.filteredConvs = this.updatedConvs.filter(c =>
+    this.filteredConvs = this.conversations.filter((c: Conversation) =>
       c.user &&
       ((c.user.firstname && norm(c.user.firstname).includes(normFilter)) ||
       (c.user.lastname && norm(c.user.lastname).includes(normFilter))))
-  }
-
-  @Watch('conversations')
-  async updateConv (val: Array<Conversation>) {
-    if (!val) {
-      this.updatedConvs = []
-      return
-    }
-
-    let updatedConvs: Array<Conversation> = []
-
-    for (let i = 0; i < val.length; i++) {
-      let generatedUser: User
-      let gender: string
-      try {
-        const uinamesUrl = 'https://uinames.com/api/?region=france'
-        const response = await axios.get(uinamesUrl)
-        generatedUser = {
-          firstname: response.data.name,
-          lastname: response.data.surname
-        }
-        gender = response.data.gender === 'female' ? 'women' : 'men'
-      } catch (e) {
-        console.error(e)
-        generatedUser = {
-          firstname: 'soco',
-          lastname: 'man'
-        }
-        gender = Math.random() > 0.5 ? 'men' : 'women'
-      }
-      const id = Math.floor((Math.random() * 100))
-      const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
-      generatedUser.image = url
-      updatedConvs = [
-        ...updatedConvs,
-        {
-          ...val[i],
-          user: {
-            ...val[i].user,
-            ...generatedUser
-          }
-        }
-      ]
-    }
-    this.updatedConvs = updatedConvs
-    this.filterConvs()
   }
 }
 </script>
