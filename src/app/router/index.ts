@@ -23,6 +23,10 @@ const routes: RouteConfig[] = [
     }
   },
   {
+    path: '/convs',
+    redirect: '/'
+  },
+  {
     path: '/available',
     name: availableRouteName,
     component: Main,

@@ -42,9 +42,9 @@ export default class NavigationDrawer extends Vue {
     super()
 
     this.buttons = [
-      { title: 'Mes conversations', link: '/', icon: 'add' },
-      { title: 'Conversations dispo', link: '/available', icon: 'add' },
-      { title: 'Mon profil', link: '/profile', icon: 'add' },
+      { title: 'Mes conversations', link: 'convs', icon: 'add' },
+      { title: 'Conversations dispo', link: 'available', icon: 'add' },
+      { title: 'Mon profil', link: 'profile', icon: 'add' },
       { title: 'Mes SocoCoins', link: '/tokens', icon: 'add' }
     ]
   }
