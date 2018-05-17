@@ -48,14 +48,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
 import Component from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
 import { Conversation } from '../typings/types'
 
 @Component({
-  props: ['selectedId'],
-  computed: mapGetters(['conversations'])
+  props: ['selectedId', 'conversations']
 })
 export default class ConversationList extends Vue {
   conversations: any
