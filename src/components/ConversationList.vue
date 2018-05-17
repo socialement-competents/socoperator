@@ -4,9 +4,8 @@
       <v-layout row justify-center class="hidden-xs-only">
         <v-flex xs10>
           <v-text-field
-            id="testing"
-            name="input-1"
-            label="Label Text"
+            v-model="nameFilter"
+            label="Rechercher une conversation"
             prepend-icon="search"
             color="#545B58"
           ></v-text-field>
@@ -16,7 +15,7 @@
         <v-flex xs10>
           <v-list three-line class="list">
             <v-subheader>Today</v-subheader>
-            <template v-for="conv in updatedConvs">
+            <template v-for="conv in filteredConvs">
               <v-list-tile
                 :key="conv._id"
                 avatar
@@ -37,6 +36,9 @@
                 </v-list-tile-content>
               </v-list-tile>
             </template>
+            <div v-if="filteredConvs.length === 0">
+              Aucune conversation trouvée
+            </div>
           </v-list>
         </v-flex>
       </v-layout>
@@ -57,8 +59,34 @@ import { Conversation, User } from '../typings/types'
   computed: mapGetters(['conversations'])
 })
 export default class ConversationList extends Vue {
+  nameFilter: string = ''
   updatedConvs: Array<Conversation> = []
+  filteredConvs: Array<Conversation> = []
   selectedId: string | null | undefined
+
+  @Watch('nameFilter')
+  nameFilterChanged () {
+    this.filterConvs()
+  }
+
+  filterConvs () {
+    if (this.nameFilter.length < 2) {
+      this.filteredConvs = this.updatedConvs
+    }
+
+    // Normalise une string (ÈêéÊÈâÏù => eeeeeeaiu)
+    const norm = (str: string) => str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+
+    const normFilter = norm(this.nameFilter)
+
+    this.filteredConvs = this.updatedConvs.filter(c =>
+      c.user &&
+      ((c.user.firstname && norm(c.user.firstname).includes(normFilter)) ||
+      (c.user.lastname && norm(c.user.lastname).includes(normFilter))))
+  }
 
   @Watch('conversations')
   async updateConv (val: Array<Conversation>) {
@@ -103,6 +131,7 @@ export default class ConversationList extends Vue {
       ]
     }
     this.updatedConvs = updatedConvs
+    this.filterConvs()
   }
 }
 </script>
