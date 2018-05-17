@@ -47,8 +47,8 @@ const mockConvUsers = async (convs: Array<Conversation>) => {
       gender = Math.random() > 0.5 ? 'men' : 'women'
     }
     const id = Math.floor((Math.random() * 100))
-    const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
-    generatedUser.image = url
+    const imageUrl = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
+    generatedUser.image = imageUrl
     updatedConvs = [
       ...updatedConvs,
       {

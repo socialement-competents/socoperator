@@ -8,7 +8,11 @@
         ></ConversationList>
       </v-flex>
       <v-flex xs8 class="no-padding">
-        <MessageList :messages="selectedMessages"></MessageList>
+        <MessageList
+          v-if="selectedConv"
+          :messages="selectedConv.messages"
+          :interlocutor="selectedConv.user"
+        ></MessageList>
       </v-flex>
     </v-layout>
   </v-container>
@@ -21,7 +25,7 @@ import Component from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
 import ConversationList from '@/components/ConversationList'
 import MessageList from '@/components/MessageList'
-import { Conversation, Message } from '../typings/types'
+import { Conversation } from '../typings/types'
 
 @Component({
   components: {
@@ -33,7 +37,7 @@ import { Conversation, Message } from '../typings/types'
 export default class MainContent extends Vue {
   conversations: Array<Conversation> | undefined
   selectedId: string | undefined = ''
-  selectedMessages: Array<Message | null | undefined> | undefined | null = []
+  selectedConv: Conversation | undefined | null = {}
 
   @Watch('conversations')
   conversationsChanged (val: Array<Conversation>, old: any): void {
@@ -41,7 +45,7 @@ export default class MainContent extends Vue {
       return
     }
     this.selectedId = val[0]._id || ''
-    this.selectedMessages = val[0].messages
+    this.selectedConv = val[0]
   }
 
   async onSelectedConv (id: string) {
@@ -55,7 +59,7 @@ export default class MainContent extends Vue {
     }
 
     this.selectedId = id
-    this.selectedMessages = conv.messages
+    this.selectedConv = conv
   }
 }
 </script>
