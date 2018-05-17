@@ -11,7 +11,7 @@ const getters: GetterTree<any, any> = {
   user (state): User {
     return state.user
   },
-  loginError (state): boolean {
+  loginError (state): string | undefined {
     return state.loginError
   }
 }

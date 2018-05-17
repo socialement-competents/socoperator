@@ -15,11 +15,11 @@ import MainContent from '@/components/MainContent'
   }
 })
 export default class Main extends Vue {
-  constructor () {
-    super()
-    this.getConversations()
+  async created () {
+    await this.$store.dispatch('getAllConversations')
   }
-  async getConversations () {
+
+  async updated () {
     await this.$store.dispatch('getAllConversations')
   }
 }

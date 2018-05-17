@@ -15,15 +15,25 @@
       <v-layout row justify-center>
         <v-flex xs10>
           <v-list three-line class="list">
-            <template v-for="(message, index) in messages">
-              <v-subheader v-if="message.header" :key="index">{{ message.header }}</v-subheader>
-              <v-list-tile v-else :key="message.title" avatar @click="select(message)" class="card-conversation" v-bind:class="{'active': message.active}">
+            <v-subheader>Today</v-subheader>
+            <template v-for="conv in updatedConvs">
+              <v-list-tile
+                :key="conv._id"
+                avatar
+                @click="$emit('selectedConv', conv._id)"
+                class="card-conversation"
+                :class="{ active: conv._id === selectedId }"
+              >
                 <v-list-tile-avatar>
-                  <img :src="message.avatar" class="image">
+                  <img :src="conv.user.image" class="image">
                 </v-list-tile-avatar>
                 <v-list-tile-content class="hidden-xs-only">
-                  <v-list-tile-title v-html="message.title"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="message.subtitle"></v-list-tile-sub-title>
+                  <v-list-tile-title v-if="conv.user">
+                    {{ conv.user.firstname }}&nbsp;{{ conv.user.lastname }}
+                  </v-list-tile-title>
+                  <v-list-tile-sub-title v-if="conv.messages && conv.messages.length">
+                    {{ conv.messages[conv.messages.length - 1].content }}
+                  </v-list-tile-sub-title>
                 </v-list-tile-content>
               </v-list-tile>
             </template>
@@ -36,28 +46,47 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 import Component from 'vue-class-component'
+import { Watch } from 'vue-property-decorator'
 import { Conversation } from '../typings/types'
 
 @Component({
-  props: ['messages']
+  props: ['selectedId'],
+  computed: mapGetters(['conversations'])
 })
 export default class ConversationList extends Vue {
-  messages: Array<Conversation> | undefined
+  updatedConvs: Array<Conversation> = []
+  selectedId: string | null | undefined
 
-  select (message: any) {
-    if (this.messages) {
-      this.messages.forEach((button: any) => {
-        button.active = false
-      })
-      message.active = true
+  @Watch('conversations')
+  updateConv (val: Array<Conversation>) {
+    if (!val) {
+      this.updatedConvs = []
+      return
     }
+
+    this.updatedConvs = val.map((conv) => {
+      if (conv.user && conv.user.image) {
+        return conv
+      }
+
+      const id = Math.floor((Math.random() * 100))
+      const gender = Math.random() > 0.5 ? 'men' : 'women'
+      const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
+      return {
+        ...conv,
+        user: {
+          ...conv.user,
+          image: url
+        }
+      }
+    })
   }
 }
 </script>
 
 <style scoped lang="scss">
-
 .conversation-list {
   background-color: #F6FAF9;
   height: 100vh;

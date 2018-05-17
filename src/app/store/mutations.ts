@@ -14,10 +14,10 @@ const mutations: MutationTree<any> = {
     state.user = user
   },
   [TYPES.REQUEST_LOGIN] (state): void {
-    state.loginError = false
+    state.loginError = undefined
   },
-  [TYPES.LOGIN_ERROR] (state): void {
-    state.loginError = true
+  [TYPES.LOGIN_ERROR] (state, message: string): void {
+    state.loginError = message
   },
   [TYPES.LOG_OUT] (state): void {
     state.isLoggedIn = false

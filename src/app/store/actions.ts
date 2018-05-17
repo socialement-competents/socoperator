@@ -18,30 +18,40 @@ import { REGISTER } from '../../users/mutations'
 const actions: ActionTree<any, any> = {
   async getAllConversations ({ commit }, user: User) {
     commit(TYPES.REQUEST_CONVERSATIONS)
-    const result = await apolloClient.query < GetAllConversationsData > ({ query: GET_CONVERSATIONS })
-    if (!result || !result.data || !result.data.conversations) {
-      throw new Error('Error fetching the conversations')
+    try {
+      const result = await apolloClient.query < GetAllConversationsData > ({ query: GET_CONVERSATIONS })
+      if (!result || !result.data || !result.data.conversations) {
+        throw new Error('Error fetching the conversations')
+      }
+      console.log(result.data.conversations.map(c => c.user && c.user.firstname))
+      commit(TYPES.RECEIVED_CONVERSATIONS, result.data.conversations)
+    } catch (e) {
+      console.error(e)
     }
-    commit(TYPES.RECEIVED_CONVERSATIONS, result.data.conversations)
   },
   async register ({ commit }, { email, password, firstname, lastname }: RegisterPayload) {
-    const response = await apolloClient.mutate < RegisterData > ({
-      mutation: REGISTER,
-      variables: {
-        email,
-        password,
-        firstname,
-        lastname
+    try {
+      const response = await apolloClient.mutate < RegisterData > ({
+        mutation: REGISTER,
+        variables: {
+          email,
+          password,
+          firstname,
+          lastname
+        }
+      })
+      if (!response || !response.data || !response.data.addUser || !response.data.addUser._id) {
+        throw new Error('Error registering')
       }
-    })
-    if (!response || !response.data || !response.data.addUser || !response.data.addUser._id) {
-      throw new Error('Error registering')
+      window.localStorage.setItem('token', response.data.addUser.token)
+      commit(TYPES.RECEIVED_LOGIN, response.data.addUser)
+      router.push({
+        path: '/'
+      })
+    } catch (e) {
+      console.error(e)
+      commit(TYPES.LOGIN_ERROR, e.message)
     }
-    window.localStorage.setItem('token', response.data.addUser.token)
-    commit(TYPES.RECEIVED_LOGIN, response.data.addUser)
-    router.push({
-      path: '/'
-    })
   },
   async logIn ({ commit }, { email, password }: LoginPayload) {
     commit(TYPES.REQUEST_LOGIN)
@@ -53,11 +63,11 @@ const actions: ActionTree<any, any> = {
       }
     })
     try {
-      console.log(response)
       if (!response.data || !response.data.logIn || !response.data.logIn.token) {
         console.log('Invalid username or password')
         throw new Error(JSON.stringify(response))
       }
+      console.log('user:', response.data.logIn)
       window.localStorage.setItem('token', response.data.logIn.token)
       commit(TYPES.RECEIVED_LOGIN, response.data.logIn)
       router.push({
@@ -66,7 +76,7 @@ const actions: ActionTree<any, any> = {
       return
     } catch (e) {
       console.error('Login failed:', e)
-      commit(TYPES.LOGIN_ERROR)
+      commit(TYPES.LOGIN_ERROR, 'Erreur de soconnexion !\nLogin ou mot de passe invalide.')
     }
   },
   logOut ({ commit }) {

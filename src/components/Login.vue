@@ -53,8 +53,7 @@
           </v-flex>
         </v-layout>
         <div v-if="loginError" class="login-error">
-          Erreur de soconnexion !<br>
-          Login ou mot de passe invalide
+          {{ loginError }}
         </div>
         <transition name="fade" mode="out-in">
           <v-layout v-if="isRegistering" row wrap class="login-button-container">
