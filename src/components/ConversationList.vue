@@ -4,9 +4,8 @@
       <v-layout row justify-center class="hidden-xs-only">
         <v-flex xs10>
           <v-text-field
-            id="testing"
-            name="input-1"
-            label="Label Text"
+            v-model="nameFilter"
+            label="Rechercher une conversation"
             prepend-icon="search"
             color="#545B58"
           ></v-text-field>
@@ -16,7 +15,7 @@
         <v-flex xs10>
           <v-list three-line class="list">
             <v-subheader>Today</v-subheader>
-            <template v-for="conv in updatedConvs">
+            <template v-for="conv in filteredConvs">
               <v-list-tile
                 :key="conv._id"
                 avatar
@@ -37,6 +36,9 @@
                 </v-list-tile-content>
               </v-list-tile>
             </template>
+            <div v-if="filteredConvs.length === 0">
+              Aucune conversation trouvée
+            </div>
           </v-list>
         </v-flex>
       </v-layout>
@@ -46,42 +48,90 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import axios from 'axios'
 import { mapGetters } from 'vuex'
 import Component from 'vue-class-component'
 import { Watch } from 'vue-property-decorator'
-import { Conversation } from '../typings/types'
+import { Conversation, User } from '../typings/types'
 
 @Component({
   props: ['selectedId'],
   computed: mapGetters(['conversations'])
 })
 export default class ConversationList extends Vue {
+  nameFilter: string = ''
   updatedConvs: Array<Conversation> = []
+  filteredConvs: Array<Conversation> = []
   selectedId: string | null | undefined
 
+  @Watch('nameFilter')
+  nameFilterChanged () {
+    this.filterConvs()
+  }
+
+  filterConvs () {
+    if (this.nameFilter.length < 2) {
+      this.filteredConvs = this.updatedConvs
+    }
+
+    // Normalise une string (ÈêéÊÈâÏù => eeeeeeaiu)
+    const norm = (str: string) => str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+
+    const normFilter = norm(this.nameFilter)
+
+    this.filteredConvs = this.updatedConvs.filter(c =>
+      c.user &&
+      ((c.user.firstname && norm(c.user.firstname).includes(normFilter)) ||
+      (c.user.lastname && norm(c.user.lastname).includes(normFilter))))
+  }
+
   @Watch('conversations')
-  updateConv (val: Array<Conversation>) {
+  async updateConv (val: Array<Conversation>) {
     if (!val) {
       this.updatedConvs = []
       return
     }
 
-    this.updatedConvs = val.map((conv) => {
-      if (conv.user && conv.user.image) {
-        return conv
-      }
+    let updatedConvs: Array<Conversation> = []
 
-      const id = Math.floor((Math.random() * 100))
-      const gender = Math.random() > 0.5 ? 'men' : 'women'
-      const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
-      return {
-        ...conv,
-        user: {
-          ...conv.user,
-          image: url
+    for (let i = 0; i < val.length; i++) {
+      let generatedUser: User
+      let gender: string
+      try {
+        const uinamesUrl = 'https://uinames.com/api/?region=france'
+        const response = await axios.get(uinamesUrl)
+        generatedUser = {
+          firstname: response.data.name,
+          lastname: response.data.surname
         }
+        gender = response.data.gender === 'female' ? 'women' : 'men'
+      } catch (e) {
+        console.error(e)
+        generatedUser = {
+          firstname: 'soco',
+          lastname: 'man'
+        }
+        gender = Math.random() > 0.5 ? 'men' : 'women'
       }
-    })
+      const id = Math.floor((Math.random() * 100))
+      const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
+      generatedUser.image = url
+      updatedConvs = [
+        ...updatedConvs,
+        {
+          ...val[i],
+          user: {
+            ...val[i].user,
+            ...generatedUser
+          }
+        }
+      ]
+    }
+    this.updatedConvs = updatedConvs
+    this.filterConvs()
   }
 }
 </script>
