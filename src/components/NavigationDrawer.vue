@@ -2,11 +2,16 @@
   <v-navigation-drawer app clipped flat width="240" class="drawer" v-if="isLoggedIn">
     <v-btn color="socogreen" class="socobutton">test</v-btn>
     <div class="list">
-      <button class="list-button" v-for="(button, key) in buttons" :key="`button-${key}`" v-on:click="activateButton(button)">
-        <div class="vertical-selected" v-if="button.active"></div>
+      <button
+        class="list-button"
+        v-for="button in buttons"
+        :key="button.title"
+        @click.stop="select(button)"
+      >
+        <div class="vertical-selected" v-if="selectedButton === button.title"></div>
         <div class="content">
-          <v-icon class="socobutton-icon">{{button.icon}}</v-icon>
-          <span>{{button.title}}</span>
+          <v-icon class="socobutton-icon">{{ button.icon }}</v-icon>
+          <span>{{ button.title }}</span>
         </div>
       </button>
     </div>
@@ -18,30 +23,35 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { mapGetters } from 'vuex'
 
+type Button = {
+  title: string;
+  link: string;
+  icon: string;
+}
+
 @Component({
   computed: {
     ...mapGetters(['isLoggedIn'])
   }
 })
 export default class NavigationDrawer extends Vue {
-  buttons: Array<Object>
+  buttons: Array<Button>
+  selectedButton: string = 'Mes conversations'
 
   constructor () {
     super()
 
     this.buttons = [
-      { title: 'Mes conversations', icon: 'add', active: true },
-      { title: 'Conversations dispo', icon: 'add', active: false },
-      { title: 'Mon profil', icon: 'add', active: false },
-      { title: 'Mes sococoins', icon: 'add', active: false }
+      { title: 'Mes conversations', link: '/', icon: 'add' },
+      { title: 'Conversations dispo', link: '/available', icon: 'add' },
+      { title: 'Mon profil', link: '/profile', icon: 'add' },
+      { title: 'Mes SocoCoins', link: '/tokens', icon: 'add' }
     ]
   }
 
-  activateButton (button: any) {
-    this.buttons.forEach((button: any) => {
-      button.active = false
-    })
-    button.active = true
+  select (button: Button) {
+    this.selectedButton = button.title
+    this.$router.push(button.link)
   }
 }
 </script>

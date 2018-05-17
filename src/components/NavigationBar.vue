@@ -50,6 +50,7 @@ import { mapActions, mapGetters } from 'vuex'
   }
 })
 export default class NavigationBar extends Vue {
+  isLoggedIn: any
   async created () {
     await this.fetchUser()
   }
@@ -57,6 +58,9 @@ export default class NavigationBar extends Vue {
     await this.fetchUser()
   }
   async fetchUser () {
+    if (!this.isLoggedIn) {
+      return
+    }
     await this.$store.dispatch('fetchUser')
   }
 }

@@ -4,7 +4,9 @@
       <v-container grid-list-md text-xs-center>
         <v-layout row wrap class="header-layout">
           <v-flex xs9 class="header-title">
-            <h1>Title</h1>
+            <h1 v-if="interlocutor">
+              {{ interlocutor.firstname }} {{ interlocutor.lastname }}
+            </h1>
           </v-flex>
           <v-flex xs3 class="header-date">
             <span class="date">Lundi 1 janvier 2018</span>
@@ -42,17 +44,18 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { Message } from '../typings/types'
+import { Message, User } from '../typings/types'
 import { mapGetters } from 'vuex'
 
 @Component({
-  props: ['messages'],
+  props: ['messages', 'interlocutor'],
   computed: {
     ...mapGetters(['user'])
   }
 })
 export default class MessageList extends Vue {
   messages: Array<Message> | undefined
+  interlocutor: User | undefined
 }
 </script>
 
