@@ -64,10 +64,10 @@ const actions: ActionTree<any, any> = {
     })
     try {
       if (!response.data || !response.data.logIn || !response.data.logIn.token) {
-        console.log('user:', response.data.logIn)
         console.log('Invalid username or password')
         throw new Error(JSON.stringify(response))
       }
+      console.log('user:', response.data.logIn)
       window.localStorage.setItem('token', response.data.logIn.token)
       commit(TYPES.RECEIVED_LOGIN, response.data.logIn)
       router.push({
