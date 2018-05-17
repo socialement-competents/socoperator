@@ -46,7 +46,7 @@ const actions: ActionTree<any, any> = {
         throw new Error('Error registering')
       }
       window.localStorage.setItem('token', response.data.addUser.token)
-      window.localStorage.setItem('userId', response.data.logIn._id)
+      window.localStorage.setItem('userId', response.data.addUser._id)
       commit(TYPES.RECEIVED_LOGIN, response.data.addUser)
       router.push({
         path: '/'
