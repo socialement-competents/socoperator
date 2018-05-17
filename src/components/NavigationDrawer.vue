@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app clipped flat width="240" class="drawer" v-if="isLoggedIn">
-    <v-btn color="socogreen" class="socobutton">test</v-btn>
+    <v-btn color="socogreen" class="socobutton">34 SocoCoins</v-btn>
     <div class="list">
       <button
         class="list-button"
@@ -42,10 +42,10 @@ export default class NavigationDrawer extends Vue {
     super()
 
     this.buttons = [
-      { title: 'Mes conversations', link: '/', icon: 'add' },
-      { title: 'Conversations dispo', link: '/available', icon: 'add' },
-      { title: 'Mon profil', link: '/profile', icon: 'add' },
-      { title: 'Mes SocoCoins', link: '/tokens', icon: 'add' }
+      { title: 'Mes conversations', link: '/', icon: 'chat' },
+      { title: 'Conversations dispo', link: '/available', icon: 'chat_bubble_outline' },
+      { title: 'Mon profil', link: '/profile', icon: 'face' }
+      // { title: 'Mes SocoCoins', link: '/tokens', icon: 'add' }
     ]
   }
 

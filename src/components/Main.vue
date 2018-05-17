@@ -11,7 +11,7 @@ import MainContent from '@/components/MainContent'
 
 @Component({
   components: {
-    'MainContent': MainContent
+    MainContent
   }
 })
 export default class Main extends Vue {
