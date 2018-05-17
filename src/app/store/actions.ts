@@ -80,7 +80,7 @@ const actions: ActionTree<any, any> = {
       const web3 = await getWeb3()
       commit(registerWeb3Instance, web3)
       clearInterval(pollInterval)
-      pollInterval = pollWeb3()
+      pollInterval = pollWeb3(undefined)
     } catch (e) {
       console.log('error registering web3:', e)
       commit(setError, `Couldn't connect to Metamask. Is Metamask running and are you logged with a wallet ?`)
