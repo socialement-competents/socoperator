@@ -25,7 +25,6 @@ const mockConvUsers = async (convs: Array<Conversation>) => {
     return []
   }
 
-
   const uinamesUrl = `https://uinames.com/api/?region=france&amount=${convs.length}`
 
   try {
@@ -37,7 +36,7 @@ const mockConvUsers = async (convs: Array<Conversation>) => {
         ...convs[i].user,
         firstname: response.data[i].name,
         lastname: response.data[i].surname,
-        image:  `https://randomuser.me/api/portraits/med/${response.data[i].gender === 'female' ? 'women' : 'men'}/${i}.jpg`
+        image: `https://randomuser.me/api/portraits/med/${response.data[i].gender === 'female' ? 'women' : 'men'}/${i}.jpg`
       }
     }))
     return updatedConvs
