@@ -29,7 +29,7 @@ const pollWeb3Instance = 'POLL_WEB3_INSTANCE'
 const setError = 'SET_ERROR'
 const setContractInstance = 'SET_CONTRACT_INSTANCE'
 
-let pollInterval: any | undefined = undefined
+let pollInterval: any | undefined
 
 const mockConvUsers = async (convs: Array<Conversation>) => {
   if (!convs) {

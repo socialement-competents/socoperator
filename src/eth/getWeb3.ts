@@ -1,8 +1,9 @@
 import Web3 from 'web3'
 
 const getWeb3 = () => new Promise(function (resolve, reject) {
+  const w: any = window
   // Check for injected web3 (mist/metamask)
-  const web3js = (<any>window).web3
+  const web3js = w.web3
   if (typeof web3js !== 'undefined') {
     const web3 = new Web3(web3js.currentProvider)
     resolve({

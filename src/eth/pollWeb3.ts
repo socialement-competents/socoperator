@@ -2,10 +2,11 @@ import Web3 from 'web3'
 import store from '../app/store'
 
 const pollWeb3 = function (state: any) {
-  const web3 = new Web3((<any>window).web3.currentProvider)
+  const w: any = window
+  const web3 = new Web3(w.web3.currentProvider)
 
-  return setInterval(() => {
-    if (!web3 || !store.state.web3.web3Instance) {
+  setInterval(() => {
+    if (!store.state.web3.web3Instance) {
       return
     }
 
