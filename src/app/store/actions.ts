@@ -17,7 +17,6 @@ import router from '../../app/router'
 import { GET_CONVERSATIONS } from '../../conversations/queries'
 import { LOGIN, GET_USER_BY_ID } from '../../users/queries'
 import { REGISTER } from '../../users/mutations'
-import { EDESTADDRREQ } from 'constants';
 
 const actions: ActionTree<any, any> = {
   async getAllConversations ({ commit }, user: User) {
@@ -86,6 +85,7 @@ const actions: ActionTree<any, any> = {
       commit(TYPES.LOGIN_ERROR, 'Le champ Mot de passe est obligatoire.')
       return
     }
+    // eslint-disable-next-line
     if (!email.match(/^([\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+\.)*[\w\!\#$\%\&\'\*\+\-\/\=\?\^\`{\|\}\~]+@((((([a-z0-9]{1}[a-z0-9\-]{0,62}[a-z0-9]{1})|[a-z])\.)+[a-z]{2,6})|(\d{1,3}\.){3}\d{1,3}(\:\d{1,5})?)$/i)) {
       commit(TYPES.LOGIN_ERROR, `L'email n'a pas l'air valide.`)
       return
