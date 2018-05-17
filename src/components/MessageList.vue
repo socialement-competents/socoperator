@@ -4,7 +4,9 @@
       <v-container grid-list-md text-xs-center>
         <v-layout row wrap class="header-layout">
           <v-flex xs9 class="header-title">
-            <h1>Title</h1>
+            <h1 v-if="interlocutor">
+              {{ interlocutor.firstname }} {{ interlocutor.lastname }}
+            </h1>
           </v-flex>
           <v-flex xs3 class="header-date">
             <span class="date">Lundi 1 janvier 2018</span>
@@ -18,7 +20,7 @@
         <v-flex xs12>
           <article>
             <div v-for="msg in messages" :key="msg._id">
-              <p v-if="msg.user._id === user._id" class="from-me last">{{ msg.content }}</p>
+              <p v-if="msg.user && msg.user._id === user._id" class="from-me last">{{ msg.content }}</p>
               <p v-else class="to-me last">{{ msg.content }}</p>
             </div>
           </article>
@@ -30,7 +32,7 @@
         <v-layout row wrap>
           <v-flex xs12>
             <div class="text-area-container">
-              <textarea ref="socomessage" rows="2" placeholder="Ecrivez quelque chose..." @keydown.enter.stop.prevent="addMessage"></textarea>
+              <textarea v-model="socomessage" rows="2" placeholder="Ecrivez quelque chose..." @keydown.enter.stop.prevent="addMessage"></textarea>
             </div>
           </v-flex>
         </v-layout>
@@ -45,10 +47,9 @@ import Component from 'vue-class-component'
 import { Message, User } from '../typings/types'
 import { mapGetters } from 'vuex'
 import gql from 'graphql-tag'
-import { throws } from 'assert';
 
 @Component({
-  props: ['messages', 'selectedId'],
+  props: ['messages', 'interlocutor', 'selectedId'],
   computed: {
     ...mapGetters(['user'])
   }
@@ -57,26 +58,25 @@ export default class MessageList extends Vue {
   messages: Array<Message> | undefined
   selectedId: string | undefined
   user: User | undefined
+  interlocutor: User | undefined
+  socomessage: string = ''
 
-  async addMessage() {
-    try {
-      const result = await this.$apollo.mutate({
-        mutation: gql`mutation ($selectedId: String!, $content: String!, $user: String!) {
-          addMessage(conversationId: $selectedId, content: $content, userId: $user) {
-            _id
-            content
-            isRead
-            createdAt
-          }
-        }`,
-        variables: {
-          selectedId: this.selectedId,
-          content: (<any>this.$refs.socomessage).value,
-          user: this.user ? this.user._id : ''
+  async addMessage () {
+    await this.$apollo.mutate({
+      mutation: gql`mutation ($selectedId: String!, $content: String!, $user: String!) {
+        addMessage(conversationId: $selectedId, content: $content, userId: $user) {
+          _id
+          content
+          isRead
+          createdAt
         }
-      })
-      this.messages ? this.messages.concat([result.data.addMessage]) : null
-    } catch (e) {} 
+      }`,
+      variables: {
+        selectedId: this.selectedId,
+        content: this.socomessage,
+        user: this.user ? this.user._id : ''
+      }
+    })
   }
 }
 </script>
