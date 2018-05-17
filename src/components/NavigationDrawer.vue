@@ -22,6 +22,7 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { mapGetters } from 'vuex'
+import { mainRouteName, availableRouteName, profileRouteName } from '../app/constants'
 
 type Button = {
   title: string;
@@ -42,16 +43,15 @@ export default class NavigationDrawer extends Vue {
     super()
 
     this.buttons = [
-      { title: 'Mes conversations', link: 'convs', icon: 'add' },
-      { title: 'Conversations dispo', link: 'available', icon: 'add' },
-      { title: 'Mon profil', link: 'profile', icon: 'add' },
-      { title: 'Mes SocoCoins', link: '/tokens', icon: 'add' }
+      { title: 'Mes conversations', link: mainRouteName, icon: 'add' },
+      { title: 'Conversations dispo', link: availableRouteName, icon: 'add' },
+      { title: 'Mon profil', link: profileRouteName, icon: 'add' }
     ]
   }
 
   select (button: Button) {
     this.selectedButton = button.title
-    this.$router.push(button.link)
+    this.$router.push({ name: button.link })
   }
 }
 </script>
