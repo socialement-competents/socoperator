@@ -5,7 +5,7 @@ const pollWeb3 = function (state: any) {
   const w: any = window
   const web3 = new Web3(w.web3.currentProvider)
 
-  setInterval(() => {
+  return setInterval(() => {
     if (!store.state.web3.web3Instance) {
       return
     }
