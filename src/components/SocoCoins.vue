@@ -65,6 +65,7 @@ export default class Main extends Vue {
             // TODO: afficher dans l'UI
             console.log('Transaction approved ! Receipt:', receipt)
             console.log(`https://ropsten.etherscan.io/tx/${result}`)
+            console.log('You can watch the SocoCoin contract with your wallet to check your balance: 0x60ce7335ea9fba77619db709480502cf8d208400')
             clearInterval(interval)
             this.balance = 0
           }
