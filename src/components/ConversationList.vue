@@ -67,9 +67,10 @@ export default class ConversationList extends Vue {
     }
 
     this.updatedConvs = val.map((conv) => {
-      if (conv && conv.user && conv.user.image) {
+      if (conv.user && conv.user.image) {
         return conv
       }
+
       const id = Math.floor((Math.random() * 100))
       const gender = Math.random() > 0.5 ? 'men' : 'women'
       const url = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`

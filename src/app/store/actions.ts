@@ -63,8 +63,8 @@ const actions: ActionTree<any, any> = {
       }
     })
     try {
-      console.log('user:', response.data.logIn)
       if (!response.data || !response.data.logIn || !response.data.logIn.token) {
+        console.log('user:', response.data.logIn)
         console.log('Invalid username or password')
         throw new Error(JSON.stringify(response))
       }

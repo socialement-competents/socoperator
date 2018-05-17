@@ -48,7 +48,7 @@ export default class MainContent extends Vue {
     if (!this.conversations) {
       return
     }
-    const conv: Conversation | undefined = {...this.conversations.find(c => c._id === id)}
+    const conv: Conversation | undefined = this.conversations.find(c => c._id === id)
 
     if (!conv) {
       return
