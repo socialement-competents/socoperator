@@ -14,7 +14,8 @@ describe('Login.vue', () => {
     store = new Vuex.Store({
       state: {},
       getters: {
-        isLoggedIn: () => false
+        isLoggedIn: () => false,
+        loginError: () => ''
       }
     })
   })

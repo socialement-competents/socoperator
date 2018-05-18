@@ -15,6 +15,7 @@
         <v-flex xs10>
           <v-list three-line class="list">
             <v-subheader>Today</v-subheader>
+            <transition-group name="list" tag="div">
             <template v-for="conv in filteredConvs">
               <v-list-tile
                 :key="conv._id"
@@ -36,6 +37,7 @@
                 </v-list-tile-content>
               </v-list-tile>
             </template>
+            </transition-group>
             <div v-if="filteredConvs.length === 0">
               Aucune conversation trouvée
             </div>
@@ -120,6 +122,14 @@ export default class ConversationList extends Vue {
       }
     }
   }
+}
+
+.list-enter-active, .list-leave-active {
+  transition: all 0.8s;
+}
+.list-enter, .list-leave-to {
+  opacity: 0;
+  transform: translateX(200px);
 }
 
 </style>

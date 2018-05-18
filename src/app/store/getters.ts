@@ -13,7 +13,11 @@ const getters: GetterTree<any, any> = {
   },
   loginError (state): string | undefined {
     return state.loginError
-  }
+  },
+  error: ({ error }) => error,
+  web3: ({ web3 }) => web3,
+  w3i: ({ web3 }) => web3 && web3.web3Instance && web3.web3Instance(),
+  contract: ({ contractInstanceGetter }) => contractInstanceGetter && contractInstanceGetter()
 }
 
 export default getters

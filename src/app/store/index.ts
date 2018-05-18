@@ -14,7 +14,17 @@ const state: State = {
     false,
   conversations: [],
   loginError: undefined,
-  user: undefined
+  user: undefined,
+  web3: {
+    isInjected: false,
+    web3Instance: undefined,
+    networkId: undefined,
+    coinbase: undefined,
+    balance: undefined,
+    error: undefined
+  },
+  contractInstanceGetter: undefined,
+  error: undefined
 }
 
 export default new Vuex.Store({
