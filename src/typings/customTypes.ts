@@ -39,4 +39,14 @@ export interface State {
   conversations: Conversation[];
   loginError: string | undefined;
   user: User | undefined;
+  web3: {
+    isInjected: boolean;
+    web3Instance: any | undefined;
+    networkId: any | undefined;
+    coinbase: any | undefined;
+    balance: any | undefined;
+    error: any | undefined;
+  };
+  contractInstanceGetter: any | undefined;
+  error: string | undefined;
 }

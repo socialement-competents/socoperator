@@ -20,6 +20,12 @@ import { GET_CONVERSATIONS } from '../../conversations/queries'
 import { LOGIN, GET_USER_BY_ID } from '../../users/queries'
 import { REGISTER } from '../../users/mutations'
 
+import getWeb3 from '../../eth/getWeb3'
+import pollWeb3 from '../../eth/pollWeb3'
+import getContract from '../../eth/getContract'
+
+let pollInterval: any | undefined
+
 const mockConvUsers = async (convs: Array<Conversation>) => {
   if (!convs) {
     return []
@@ -64,6 +70,32 @@ const mockConvUsers = async (convs: Array<Conversation>) => {
 }
 
 const actions: ActionTree<any, any> = {
+  registerWeb3: async ({ commit }) => {
+    try {
+      const web3 = await getWeb3()
+      commit(TYPES.REGISTER_WEB3_INSTANCE, web3)
+      clearInterval(pollInterval)
+      pollInterval = pollWeb3(undefined)
+    } catch (e) {
+      console.log('error registering web3: is Metamask installed and running ?', e)
+      commit(TYPES.SET_ERROR, `Couldn't connect to Metamask. Is Metamask running and are you logged with a wallet ?`)
+    }
+  },
+
+  pollWeb3: ({ commit }, payload) => {
+    commit(TYPES.POLL_WEB3_INSTANCE, payload)
+  },
+
+  getContractInstance: async ({ commit }) => {
+    try {
+      const contract = await getContract()
+      commit(TYPES.SET_CONTRACT_INSTANCE, { ...contract })
+    } catch (e) {
+      console.log('error getting the contract:', e)
+      commit(TYPES.SET_ERROR, `Couldn't get the Lottery smart-contract`)
+    }
+  },
+
   async getAllConversations ({ commit }, user: User) {
     commit(TYPES.REQUEST_CONVERSATIONS)
     try {
