@@ -17,6 +17,7 @@ import {
 import { apolloClient } from '../../main'
 import router from '../../app/router'
 import { GET_CONVERSATIONS } from '../../conversations/queries'
+import { SUBSCRIBE_TO_NEW_MESSAGES } from '../../conversations/subscriptions'
 import { LOGIN, GET_USER_BY_ID } from '../../users/queries'
 import { REGISTER } from '../../users/mutations'
 import { ADD_MESSAGE } from '../../messages/mutations'
@@ -217,8 +218,38 @@ const actions: ActionTree<any, any> = {
       commit(TYPES.ADD_MESSAGE_ERROR, e)
     }
   },
-  selectConversation ({ commit }, conversation) {
+  selectConversation ({ commit }, conversation: Conversation | undefined) {
     commit(TYPES.SELECT_CONVERSATION, conversation)
+    if (!conversation) {
+      return
+    }
+    let subscribedConv: Conversation = {
+      ...conversation
+    }
+    const observer = apolloClient.subscribe({
+      query: SUBSCRIBE_TO_NEW_MESSAGES,
+      variables: {
+        id: conversation._id
+      }
+    })
+    observer.subscribe({
+      next (result) {
+        console.log('received a new message:', result)
+        if (result.data.messageAdded) {
+          subscribedConv = {
+            ...subscribedConv,
+            messages: [
+              ...subscribedConv.messages || [],
+              result.data.messageAdded
+            ]
+          }
+          commit(TYPES.SELECT_CONVERSATION, subscribedConv)
+        }
+      },
+      error (error) {
+        console.error(error)
+      }
+    })
   }
 }
 

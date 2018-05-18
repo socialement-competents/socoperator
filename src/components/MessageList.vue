@@ -18,9 +18,11 @@
     <v-container grid-list-xs text-xs-center class="conv-container">
       <v-layout row wrap>
         <v-flex xs12>
-          <article>
-            <div v-for="msg in messages" :key="msg._id">
-              <p v-if="msg.user && msg.user._id === user._id" class="from-me last">{{ msg.content }}</p>
+          <article v-if="conversation">
+            <div v-for="msg in conversation.messages" :key="msg._id">
+              <p v-if="msg.user && msg.user._id === user._id" class="from-me last">
+                {{ msg.content }}
+              </p>
               <p v-else class="to-me last">{{ msg.content }}</p>
             </div>
           </article>
@@ -44,24 +46,26 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { Message, User } from '../typings/types'
+import { User, Conversation } from '../typings/types'
 import { mapGetters } from 'vuex'
 import gql from 'graphql-tag'
 
 @Component({
-  props: ['messages', 'interlocutor', 'selectedId'],
+  props: ['interlocutor'],
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user', 'conversation'])
   }
 })
 export default class MessageList extends Vue {
-  messages: Array<Message> | undefined
-  selectedId: string | undefined
+  conversation: Conversation | undefined
   user: User | undefined
   interlocutor: User | undefined
   socomessage: string = ''
 
   async addMessage () {
+    if (!this.conversation) {
+      return
+    }
     await this.$apollo.mutate({
       mutation: gql`mutation ($selectedId: String!, $content: String!, $user: String!) {
         addMessage(conversationId: $selectedId, content: $content, userId: $user) {
@@ -72,11 +76,12 @@ export default class MessageList extends Vue {
         }
       }`,
       variables: {
-        selectedId: this.selectedId,
+        selectedId: this.conversation._id,
         content: this.socomessage,
         user: this.user ? this.user._id : ''
       }
     })
+    this.socomessage = ''
   }
 }
 </script>
