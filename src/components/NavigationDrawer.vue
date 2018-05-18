@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app clipped flat width="240" class="drawer" v-if="isLoggedIn">
-    <!-- <SocoCoins /> -->
+    <SocoCoins />
     <div class="list">
       <button
         class="list-button"
