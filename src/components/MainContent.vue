@@ -11,10 +11,10 @@
       <v-flex xs8 class="no-padding">
         <MessageList
           v-if="selectedConv"
-          :messages="selectedConv.messages"
           :interlocutor="selectedConv.user"
-          :selectedId="selectedConv._id"
         ></MessageList>
+          <!-- :selectedId="selectedConv._id"
+          :messages="selectedConv.messages" -->
       </v-flex>
     </v-layout>
   </v-container>
@@ -81,6 +81,11 @@ export default class MainContent extends Vue {
   @Watch('$route')
   routeChanged () {
     this.filterConversationsByOperator()
+  }
+
+  @Watch('selectedConv')
+  selectedConvChanged (conv: Conversation | undefined) {
+    this.$store.dispatch('selectConversation', conv)
   }
 
   async onSelectedConv (id: string) {
