@@ -1,13 +1,14 @@
 <template>
   <v-navigation-drawer app clipped flat width="240" class="drawer" v-if="isLoggedIn">
-    <SocoCoins />
+    <SocoCoins v-if="false" />
     <div class="list">
       <button
         class="list-button"
         v-for="button in buttons"
         :key="button.title"
-        @click.stop="select(button)"
+        @click="select(button)"
       >
+        <!-- :href="button.link" -->
         <div class="vertical-selected" v-if="selectedButton === button.title"></div>
         <div class="content">
           <v-icon class="socobutton-icon">{{ button.icon }}</v-icon>
@@ -22,11 +23,13 @@
 import Vue from 'vue'
 import Component from 'vue-class-component'
 import { mapGetters } from 'vuex'
+import { mainRouteName, availableRouteName, profileRouteName } from '../app/constants'
 import SocoCoins from './SocoCoins'
 
 type Button = {
   title: string;
   link: string;
+  routeName: string;
   icon: string;
 }
 
@@ -46,15 +49,15 @@ export default class NavigationDrawer extends Vue {
     super()
 
     this.buttons = [
-      { title: 'Mes conversations', link: '/', icon: 'chat' },
-      { title: 'Conversations dispo', link: '/available', icon: 'chat_bubble_outline' },
-      { title: 'Mon profil', link: '/profile', icon: 'face' }
+      { title: 'Mes conversations', link: '/', routeName: mainRouteName, icon: 'chat' },
+      { title: 'Conversations dispo', link: '/available', routeName: availableRouteName, icon: 'chat_bubble_outline' },
+      { title: 'Mon profil', link: '/profile', routeName: profileRouteName, icon: 'face' }
     ]
   }
 
   select (button: Button) {
     this.selectedButton = button.title
-    this.$router.push(button.link)
+    this.$router.push({ name: button.routeName })
   }
 }
 </script>
@@ -78,6 +81,7 @@ export default class NavigationDrawer extends Vue {
       align-items: center;
       outline: none;
       margin: 20px 0 0 0;
+      text-decoration: none;
 
       .vertical-selected {
         position: absolute;

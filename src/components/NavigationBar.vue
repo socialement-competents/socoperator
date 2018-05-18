@@ -1,9 +1,9 @@
 <template>
   <v-toolbar app flat clipped-left color="#F1F4F3" height="80px" v-if="isLoggedIn">
-    <a class="title" href="">
-      <img src="../assets/soco-logo.png" alt="" height="56px">
+    <img src="../assets/soco-logo.png" alt="" height="56px" class="title">
+    <v-toolbar-title>
       <span class="socodarkgray--text hidden-xs-only">socoperator</span>
-    </a>
+    </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items v-if="user" class="item-profile">
       <span>{{ user.firstname | capitalize }} {{ user.lastname | capitalize }}</span>
@@ -72,11 +72,15 @@ export default class NavigationBar extends Vue {
   border-bottom: 2px solid #ECEFEE;
 
   .title {
+    padding: 12px;
     margin: 0 40px !important; 
+    vertical-align: middle;
     display: flex;
     align-items: center;
     flex-direction: row;
-    height: 100%;
+    height: 80px;
+    overflow: hidden;
+    cursor: pointer;
     text-decoration: none;
 
     span {

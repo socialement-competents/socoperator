@@ -31,42 +31,33 @@ const mockConvUsers = async (convs: Array<Conversation>) => {
     return []
   }
 
-  let updatedConvs: Array<Conversation> = []
+  const uinamesUrl = `https://uinames.com/api/?region=france&amount=${convs.length}`
 
-  await Promise.all(convs.map(async (conv, i) => {
-    let generatedUser: User
-    let gender: string
-    try {
-      const uinamesUrl = 'https://uinames.com/api/?region=france'
-      const response = await axios.get(uinamesUrl)
-      generatedUser = {
-        firstname: response.data.name,
-        lastname: response.data.surname
+  try {
+    const response = await axios.get(uinamesUrl)
+
+    const updatedConvs: Array<Conversation> = convs.map((conv, i) => ({
+      ...convs[i],
+      user: {
+        ...convs[i].user,
+        firstname: response.data[i].name,
+        lastname: response.data[i].surname,
+        image: `https://randomuser.me/api/portraits/med/${response.data[i].gender === 'female' ? 'women' : 'men'}/${i}.jpg`
       }
-      gender = response.data.gender === 'female' ? 'women' : 'men'
-    } catch (e) {
-      console.error(e)
-      generatedUser = {
-        firstname: 'soco',
-        lastname: 'man'
+    }))
+    return updatedConvs
+  } catch (e) {
+    console.error(e)
+
+    return convs.map((conv) => ({
+      ...conv,
+      user: {
+        firstname: 'Soco',
+        lastname: 'Man',
+        image: `https://randomuser.me/api/portraits/med/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 100)}`
       }
-      gender = Math.random() > 0.5 ? 'men' : 'women'
-    }
-    const id = Math.floor((Math.random() * 100))
-    const imageUrl = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
-    generatedUser.image = imageUrl
-    updatedConvs = [
-      ...updatedConvs,
-      {
-        ...convs[i],
-        user: {
-          ...convs[i].user,
-          ...generatedUser
-        }
-      }
-    ]
-  }))
-  return updatedConvs
+    }))
+  }
 }
 
 const actions: ActionTree<any, any> = {
