@@ -234,6 +234,7 @@ const actions: ActionTree<any, any> = {
     })
     observer.subscribe({
       next(result) {
+        console.log('received a new message:', result)
         if (result.data.messageAdded) {
           subscribedConv = {
             ...subscribedConv,

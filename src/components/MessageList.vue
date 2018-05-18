@@ -81,6 +81,7 @@ export default class MessageList extends Vue {
         user: this.user ? this.user._id : ''
       }
     })
+    this.socomessage = ''
   }
 }
 </script>
