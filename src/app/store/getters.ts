@@ -16,7 +16,11 @@ const getters: GetterTree<any, any> = {
   },
   conversation (state): Conversation | undefined {
     return state.conversation
-  }
+  },
+  error: ({ error }) => error,
+  web3: ({ web3 }) => web3,
+  w3i: ({ web3 }) => web3 && web3.web3Instance && web3.web3Instance(),
+  contract: ({ contractInstanceGetter }) => contractInstanceGetter && contractInstanceGetter()
 }
 
 export default getters

@@ -21,50 +21,73 @@ import { LOGIN, GET_USER_BY_ID } from '../../users/queries'
 import { REGISTER } from '../../users/mutations'
 import { ADD_MESSAGE } from '../../messages/mutations'
 
+import getWeb3 from '../../eth/getWeb3'
+import pollWeb3 from '../../eth/pollWeb3'
+import getContract from '../../eth/getContract'
+
+let pollInterval: any | undefined
+
 const mockConvUsers = async (convs: Array<Conversation>) => {
   if (!convs) {
     return []
   }
 
-  let updatedConvs: Array<Conversation> = []
+  const uinamesUrl = `https://uinames.com/api/?region=france&amount=${convs.length}`
 
-  await Promise.all(convs.map(async (conv, i) => {
-    let generatedUser: User
-    let gender: string
-    try {
-      const uinamesUrl = 'https://uinames.com/api/?region=france'
-      const response = await axios.get(uinamesUrl)
-      generatedUser = {
-        firstname: response.data.name,
-        lastname: response.data.surname
+  try {
+    const response = await axios.get(uinamesUrl)
+
+    const updatedConvs: Array<Conversation> = convs.map((conv, i) => ({
+      ...convs[i],
+      user: {
+        ...convs[i].user,
+        firstname: response.data[i].name,
+        lastname: response.data[i].surname,
+        image: `https://randomuser.me/api/portraits/med/${response.data[i].gender === 'female' ? 'women' : 'men'}/${i}.jpg`
       }
-      gender = response.data.gender === 'female' ? 'women' : 'men'
-    } catch (e) {
-      console.error(e)
-      generatedUser = {
-        firstname: 'soco',
-        lastname: 'man'
+    }))
+    return updatedConvs
+  } catch (e) {
+    console.error(e)
+
+    return convs.map((conv) => ({
+      ...conv,
+      user: {
+        firstname: 'Soco',
+        lastname: 'Man',
+        image: `https://randomuser.me/api/portraits/med/${Math.random() > 0.5 ? 'men' : 'women'}/${Math.floor(Math.random() * 100)}`
       }
-      gender = Math.random() > 0.5 ? 'men' : 'women'
-    }
-    const id = Math.floor((Math.random() * 100))
-    const imageUrl = `https://randomuser.me/api/portraits/med/${gender}/${id}.jpg`
-    generatedUser.image = imageUrl
-    updatedConvs = [
-      ...updatedConvs,
-      {
-        ...convs[i],
-        user: {
-          ...convs[i].user,
-          ...generatedUser
-        }
-      }
-    ]
-  }))
-  return updatedConvs
+    }))
+  }
 }
 
 const actions: ActionTree<any, any> = {
+  registerWeb3: async ({ commit }) => {
+    try {
+      const web3 = await getWeb3()
+      commit(TYPES.REGISTER_WEB3_INSTANCE, web3)
+      clearInterval(pollInterval)
+      pollInterval = pollWeb3(undefined)
+    } catch (e) {
+      console.log('error registering web3: is Metamask installed and running ?', e)
+      commit(TYPES.SET_ERROR, `Couldn't connect to Metamask. Is Metamask running and are you logged with a wallet ?`)
+    }
+  },
+
+  pollWeb3: ({ commit }, payload) => {
+    commit(TYPES.POLL_WEB3_INSTANCE, payload)
+  },
+
+  getContractInstance: async ({ commit }) => {
+    try {
+      const contract = await getContract()
+      commit(TYPES.SET_CONTRACT_INSTANCE, { ...contract })
+    } catch (e) {
+      console.log('error getting the contract:', e)
+      commit(TYPES.SET_ERROR, `Couldn't get the Lottery smart-contract`)
+    }
+  },
+
   async getAllConversations ({ commit }, user: User) {
     commit(TYPES.REQUEST_CONVERSATIONS)
     try {

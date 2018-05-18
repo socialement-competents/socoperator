@@ -4,14 +4,12 @@ import Router, { RouteConfig } from 'vue-router'
 import store from '@/app/store'
 import Login from '@/components/Login'
 import Main from '@/components/Main'
-import { mainRouteName, availableRouteName } from '../constants'
+import { mainRouteName, availableRouteName, loginRouteName } from '../constants'
 
 // const Login: AsyncComponent = (): any => import('@/components/Login')
 // const Main: AsyncComponent = (): any => import('@/components/Main')
 
 Vue.use(Router)
-
-const loginRouteName = 'Login'
 
 const routes: RouteConfig[] = [
   {
@@ -41,6 +39,7 @@ const routes: RouteConfig[] = [
 ]
 
 const router: Router = new Router({
+  mode: 'history',
   routes
 })
 
