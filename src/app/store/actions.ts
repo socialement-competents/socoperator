@@ -218,13 +218,10 @@ const actions: ActionTree<any, any> = {
       commit(TYPES.ADD_MESSAGE_ERROR, e)
     }
   },
-  selectConversation ({ commit }, conversation: Conversation | undefined) {
+  selectConversation ({ commit, getters }, conversation: Conversation | undefined) {
     commit(TYPES.SELECT_CONVERSATION, conversation)
     if (!conversation) {
       return
-    }
-    let subscribedConv: Conversation = {
-      ...conversation
     }
     const observer = apolloClient.subscribe({
       query: SUBSCRIBE_TO_NEW_MESSAGES,
@@ -236,10 +233,10 @@ const actions: ActionTree<any, any> = {
       next (result) {
         console.log('received a new message:', result)
         if (result.data.messageAdded) {
-          subscribedConv = {
-            ...subscribedConv,
+          const subscribedConv = {
+            ...getters.conversation,
             messages: [
-              ...subscribedConv.messages || [],
+              ...getters.conversation.messages || [],
               result.data.messageAdded
             ]
           }
