@@ -20,7 +20,7 @@
         <v-flex xs12>
           <article>
             <div v-for="msg in messages" :key="msg._id">
-              <p v-if="msg._id === user._id" class="from-me last">{{ msg.content }}</p>
+              <p v-if="msg.user && msg.user._id === user._id" class="from-me last">{{ msg.content }}</p>
               <p v-else class="to-me last">{{ msg.content }}</p>
             </div>
           </article>
@@ -32,7 +32,7 @@
         <v-layout row wrap>
           <v-flex xs12>
             <div class="text-area-container">
-              <textarea rows="2" placeholder="Ecrivez quelque chose..."></textarea>
+              <textarea v-model="socomessage" rows="2" placeholder="Ecrivez quelque chose..." @keydown.enter.stop.prevent="addMessage"></textarea>
             </div>
           </v-flex>
         </v-layout>
@@ -46,16 +46,38 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 import { Message, User } from '../typings/types'
 import { mapGetters } from 'vuex'
+import gql from 'graphql-tag'
 
 @Component({
-  props: ['messages', 'interlocutor'],
+  props: ['messages', 'interlocutor', 'selectedId'],
   computed: {
     ...mapGetters(['user'])
   }
 })
 export default class MessageList extends Vue {
   messages: Array<Message> | undefined
+  selectedId: string | undefined
+  user: User | undefined
   interlocutor: User | undefined
+  socomessage: string = ''
+
+  async addMessage () {
+    await this.$apollo.mutate({
+      mutation: gql`mutation ($selectedId: String!, $content: String!, $user: String!) {
+        addMessage(conversationId: $selectedId, content: $content, userId: $user) {
+          _id
+          content
+          isRead
+          createdAt
+        }
+      }`,
+      variables: {
+        selectedId: this.selectedId,
+        content: this.socomessage,
+        user: this.user ? this.user._id : ''
+      }
+    })
+  }
 }
 </script>
 

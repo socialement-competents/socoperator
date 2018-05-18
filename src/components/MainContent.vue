@@ -13,6 +13,7 @@
           v-if="selectedConv"
           :messages="selectedConv.messages"
           :interlocutor="selectedConv.user"
+          :selectedId="selectedConv._id"
         ></MessageList>
       </v-flex>
     </v-layout>
