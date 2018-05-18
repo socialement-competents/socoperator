@@ -230,10 +230,10 @@ const actions: ActionTree<any, any> = {
       query: SUBSCRIBE_TO_NEW_MESSAGES,
       variables: {
         id: conversation._id
-      },
+      }
     })
     observer.subscribe({
-      next(result) {
+      next (result) {
         console.log('received a new message:', result)
         if (result.data.messageAdded) {
           subscribedConv = {
@@ -246,9 +246,9 @@ const actions: ActionTree<any, any> = {
           commit(TYPES.SELECT_CONVERSATION, subscribedConv)
         }
       },
-      error(error) {
+      error (error) {
         console.error(error)
-      },
+      }
     })
   }
 }
