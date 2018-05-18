@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer app clipped flat width="240" class="drawer" v-if="isLoggedIn">
-    <SocoCoins v-if="false" />
+    <SocoCoins />
     <div class="list">
       <button
         class="list-button"
@@ -8,7 +8,6 @@
         :key="button.title"
         @click="select(button)"
       >
-        <!-- :href="button.link" -->
         <div class="vertical-selected" v-if="selectedButton === button.title"></div>
         <div class="content">
           <v-icon class="socobutton-icon">{{ button.icon }}</v-icon>
