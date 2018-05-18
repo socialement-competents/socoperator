@@ -15,9 +15,9 @@
         </v-layout>
       </v-container>
     </div>
-    <v-container grid-list-xs text-xs-center class="conv-container">
-      <v-layout row wrap>
-        <v-flex xs12>
+    <v-container grid-list-xs text-xs-center style="height: 100%;">
+      <v-layout row wrap style="height: 100%;">
+        <v-flex xs12 class="chat-container">
           <article v-if="conversation">
             <div v-for="msg in conversation.messages" :key="msg._id">
               <p v-if="msg.user && msg.user._id === user._id" class="from-me last">
@@ -90,7 +90,7 @@ export default class MessageList extends Vue {
 .message-container {
   background-color: #fff;
   padding: 0 !important;
-  height: 100vh;
+  height: 100%;
   position: relative;
 
   .header-container {
@@ -118,6 +118,11 @@ export default class MessageList extends Vue {
       }
     }
 
+  }
+
+  .chat-container {
+    padding-bottom: 180px !important;
+    overflow: scroll;
   }
 
   article {
@@ -183,7 +188,7 @@ export default class MessageList extends Vue {
   .footer-container {
     width: 100%;
     background-color: #e6e9e8;
-    bottom: calc(0px + 76px);
+    bottom: -4px;
     position: absolute;
 
     .text-area-container {
