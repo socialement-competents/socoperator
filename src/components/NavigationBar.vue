@@ -27,7 +27,6 @@
           alt="avatar"
           class="image"
         />
-        <!-- <v-icon v-else class="image">face</v-icon> -->
       </div>
     </v-toolbar-items>
   </v-toolbar>
