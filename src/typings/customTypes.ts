@@ -39,6 +39,7 @@ export interface State {
   conversations: Conversation[];
   loginError: string | undefined;
   user: User | undefined;
+  conversation: Conversation | undefined;
   web3: {
     isInjected: boolean;
     web3Instance: any | undefined;

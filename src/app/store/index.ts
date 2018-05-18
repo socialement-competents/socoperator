@@ -15,6 +15,7 @@ const state: State = {
   conversations: [],
   loginError: undefined,
   user: undefined,
+  conversation: undefined,
   web3: {
     isInjected: false,
     web3Instance: undefined,
