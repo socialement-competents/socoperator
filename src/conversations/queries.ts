@@ -6,15 +6,25 @@ query {
     _id
     user {
       _id
-      lastname
+      email
       firstname
+      lastname
     }
     operator {
       _id
-      lastname
+      email
       firstname
+      lastname
     }
     messages {
+      _id
+      isRead
+      user {
+        _id
+        email
+        firstname
+        lastname
+      }
       content
     }
   }

@@ -2,16 +2,16 @@
   <div class="login-page">
     <transition name="loginslide">
       <div v-if="!isLoggedIn" class="login-container">
-        <v-layout row wrap class="title">
+        <div class="title">
           <h1><span class="s-letter">S</span>ocoperator</h1>
-        </v-layout>
+        </div>
         <v-layout class="form-login" row wrap>
           <v-flex xs12 class="email">
             <v-text-field
               id="email"
               v-model="email"
               name="email-input"
-              label="email"
+              label="Email"
               :hide-details="true"
               color="socoblue"
             ></v-text-field>
@@ -21,7 +21,8 @@
               id="password"
               name="password-input"
               v-model="password"
-              label="Password"
+              @keyup.enter="logIn({ email, password})"
+              label="Mot de passe"
               :append-icon="passtype ? 'visibility' : 'visibility_off'"
               :append-icon-cb="() => (passtype = !passtype)"
               :type="passtype ? 'password' : 'text'"
@@ -29,10 +30,69 @@
               color="socoblue"
             ></v-text-field>
           </v-flex>
+          <v-flex v-if="isRegistering" xs12 class="firstname">
+            <v-text-field
+              id="firstname"
+              v-model="firstname"
+              name="firstname-input"
+              label="Prénom"
+              :hide-details="true"
+              color="socoblue"
+            ></v-text-field>
+          </v-flex>
+          <v-flex v-if="isRegistering" xs12 class="lastname">
+            <v-text-field
+              id="lastname"
+              name="lastname-input"
+              v-model="lastname"
+              @keyup.enter="logIn({ email, lastname})"
+              label="Nom"
+              :hide-details="true"
+              color="socoblue"
+            ></v-text-field>
+          </v-flex>
         </v-layout>
-        <v-layout row wrap class="login-button-container">
-          <v-btn class="login-button" color="socogreen" dark @click="login">Soconnecter</v-btn>
-        </v-layout>
+        <div v-if="loginError" class="login-error">
+          {{ loginError }}
+        </div>
+        <transition name="fade" mode="out-in">
+          <v-layout v-if="isRegistering" row wrap class="login-button-container">
+            <v-flex xs6>
+              <v-btn
+                class="login-button"
+                color="socolightblue"
+                dark
+                @click.stop="isRegistering = false"
+              >Retour</v-btn>
+            </v-flex>
+            <v-flex xs6>
+              <v-btn
+                class="login-button"
+                color="socogreen"
+                dark
+                @click.stop="register({ email, password, firstname, lastname })"
+              >Valider</v-btn>
+            </v-flex>
+          </v-layout>
+          <v-layout v-else row wrap class="login-button-container">
+            <v-flex xs6>
+              <v-btn
+                class="login-button"
+                color="socolightblue"
+                dark
+                @click.stop="isRegistering = true"
+              >S'enregister</v-btn>
+            </v-flex>
+            <v-flex xs6>
+              <v-btn
+                class="login-button"
+                color="socogreen"
+                dark
+                @click.stop="logIn({ email, password })"
+              >Soconnecter</v-btn>
+            </v-flex>
+          </v-layout>
+        </transition>
       </div>
     </transition>
   </div>
@@ -41,17 +101,24 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 @Component({
-  computed: mapGetters(['isLoggedIn'])
+  computed: mapGetters(['isLoggedIn', 'loginError']),
+  methods: mapActions(['logIn', 'register'])
 })
 export default class Login extends Vue {
   email: string = ''
   password: string = ''
+  firstname: string = ''
+  lastname: string = ''
   passtype: boolean = true
-  login () {
-    this.$store.dispatch('logIn', { email: this.email, password: this.password })
+  isRegistering: boolean
+
+  constructor () {
+    super()
+
+    this.isRegistering = false
   }
 }
 </script>
@@ -94,11 +161,11 @@ export default class Login extends Vue {
   border-radius: 4px;
 }
 
-.form-login .email{
+.form-login .email, .form-login .firstname, .form-login .lastname {
   padding: 10px;
 }
 
-.form-login .password{
+.form-login .password {
   padding: 10px;
   border-top: 1px solid #dedede;
 }
@@ -140,4 +207,21 @@ export default class Login extends Vue {
   to {left: 0%;}
 }
 
+.fade-enter-active {
+  animation: fade 3s;
+}
+.fade-leave-active {
+  animation: fade 3s reverse;
+}
+
+@keyframes fade {
+  from { opacity: 0 }
+}
+
+.login-error {
+  top: 50px;
+  position: relative;
+  color: #ff5252;
+  font-weight: 600;
+}
 </style>

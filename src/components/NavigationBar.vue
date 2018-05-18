@@ -1,28 +1,32 @@
 <template>
-  <v-toolbar flat color="#F1F4F3" height="80px">
-    <a class="title" href="">
-      <img src="../assets/soco-logo.png" alt="" height="70%">
+  <v-toolbar app flat clipped-left color="#F1F4F3" height="80px" v-if="isLoggedIn">
+    <img src="../assets/soco-logo.png" alt="" height="56px" class="title">
+    <v-toolbar-title>
       <span class="socodarkgray--text hidden-xs-only">socoperator</span>
-    </a>
+    </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-toolbar-items class="item-profile">
-      <span>{{user.firstname}} {{user.lastname}}</span>
+    <v-toolbar-items v-if="user" class="item-profile">
+      <span>{{ user.firstname | capitalize }} {{ user.lastname | capitalize }}</span>
       <v-menu auto class="arrow-down-button">
-        <button slot="activator">
-          <img src="../assets/down-arrow.svg" alt="">
-        </button>
+        <v-icon slot="activator">keyboard_arrow_down</v-icon>
         <v-list>
-          <v-list-tile>
-            <v-list-tile-title>test</v-list-tile-title>
+          <v-list-tile @click="console.log()">
+            <v-list-tile-title>Options</v-list-tile-title>
+          </v-list-tile>
+          <v-list-tile @click="console.log()">
+            <v-list-tile-title>Supprimer mes données personnelles</v-list-tile-title>
           </v-list-tile>
           <v-list-tile @click.stop="logOut">
             <v-list-tile-title>Se désoconnecter</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>
-      <div class="profile-image" v-bind:class="{'placeholder': !user.image}">
-        <img v-if="user.image" :src="user.image" alt="avatar">
-        <img v-else src="../assets/avatar.svg" alt="avatar">
+      <div class="profile-image" v-bind:class="{'placeholder': false}">
+        <img
+          :src="user.image || 'https://i.ytimg.com/vi/n4FnINNtr74/hqdefault.jpg'"
+          alt="avatar"
+          class="image"
+        />
       </div>
     </v-toolbar-items>
   </v-toolbar>
@@ -31,17 +35,33 @@
 <script lang="ts">
 import Vue from 'vue'
 import Component from 'vue-class-component'
-import { User } from 'src/typings/types'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 @Component({
-  props: ['user'],
   methods: {
     ...mapActions(['logOut'])
+  },
+  computed: {
+    ...mapGetters(['isLoggedIn', 'user'])
+  },
+  filters: {
+    capitalize: (value: string) => value && value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()
   }
 })
 export default class NavigationBar extends Vue {
-  user: User | undefined
+  isLoggedIn: any
+  async created () {
+    await this.fetchUser()
+  }
+  async updated () {
+    await this.fetchUser()
+  }
+  async fetchUser () {
+    if (!this.isLoggedIn) {
+      return
+    }
+    await this.$store.dispatch('fetchUser')
+  }
 }
 </script>
 
@@ -51,11 +71,15 @@ export default class NavigationBar extends Vue {
   border-bottom: 2px solid #ECEFEE;
 
   .title {
+    padding: 12px;
     margin: 0 40px !important; 
+    vertical-align: middle;
     display: flex;
     align-items: center;
     flex-direction: row;
-    height: 100%;
+    height: 80px;
+    overflow: hidden;
+    cursor: pointer;
     text-decoration: none;
 
     span {
@@ -73,10 +97,6 @@ export default class NavigationBar extends Vue {
     button {
       outline: none;
     }
-
-    img {
-      height: 14px;
-    }
   }
 
   .item-profile {
@@ -88,7 +108,7 @@ export default class NavigationBar extends Vue {
       height: 60%;
       width: auto;
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
-      img {
+      .image {
         object-fit: cover;
         height: 48px;
         width: 48px;
@@ -99,9 +119,9 @@ export default class NavigationBar extends Vue {
     .placeholder {
       background-color: #d0d0d0;
       padding: 5px;
-      img {
-        height: 100%;
-        width: auto;
+      .image {
+        height: 38px;
+        width: 38px;
         border-radius: 0;
       }
     }

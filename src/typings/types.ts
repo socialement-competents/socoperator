@@ -3,6 +3,7 @@
 export interface Query {
   users?: (User | null)[] | null;
   userById?: User | null;
+  logIn?: User | null;
   conversations?: (Conversation | null)[] | null;
   conversationById?: Conversation | null;
   messages?: (Message | null)[] | null;
@@ -14,12 +15,12 @@ export interface User {
   email?: string | null /** The email */;
   firstname?: string | null /** The firstname */;
   lastname?: string | null /** The lastname */;
-  image?: string | null
+  token?: string | null /** Token used to authenticate requests */;
+  image?: string | null;
 }
 /** Conversation type */
 export interface Conversation {
   _id?: string | null /** The id */;
-  isHandled?: boolean | null /** is the conversation handled by operator */;
   user?: User | null /** The user who started the conversation */;
   operator?: User | null /** The operator */;
   messages?: (Message | null)[] | null /** Messages of conversations */;
@@ -39,6 +40,7 @@ export interface Mutation {
 }
 
 export interface Subscription {
+  conversationAdded?: Conversation | null;
   messageAdded?: Message | null;
 }
 export interface UsersQueryArgs {
@@ -46,6 +48,10 @@ export interface UsersQueryArgs {
 }
 export interface UserByIdQueryArgs {
   id?: string | null /** find by id */;
+}
+export interface LogInQueryArgs {
+  email?: string | null /** email */;
+  password?: string | null /** password */;
 }
 export interface ConversationsQueryArgs {
   limit?: number | null /** limit items in the results */;

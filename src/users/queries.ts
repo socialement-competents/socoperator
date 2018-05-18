@@ -13,7 +13,7 @@ query getUsers {
 export const GET_USER_BY_ID = gql`
 query getUserById($id: String!) {
   userById(id: $id) {
-    id
+    _id
     email
     firstname
     lastname
@@ -27,6 +27,8 @@ query logIn($email: String!, $password: String!) {
     _id
     email
     token
+    firstname
+    lastname
   }
 }
 `

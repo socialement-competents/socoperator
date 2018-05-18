@@ -23,7 +23,7 @@ const httpLink = createHttpLink({
 })
 
 const wsLink = new WebSocketLink({
-  uri: process.env.SERVER_URL_SUB || 'ws://soco-back.herokuapp.com/subscriptions',
+  uri: process.env.SERVER_URL_SUB || 'wss://soco-back.herokuapp.com/subscriptions',
   options: {
     reconnect: true
   }
