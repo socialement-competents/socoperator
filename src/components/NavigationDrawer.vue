@@ -1,21 +1,20 @@
 <template>
   <v-navigation-drawer app clipped flat width="240" class="drawer" v-if="isLoggedIn">
-    <SocoCoins />
+    <SocoCoins v-if="false" />
     <div class="list">
-      <router-link
+      <button
         class="list-button"
         v-for="button in buttons"
         :key="button.title"
-        :to="button.link"
-        @click.stop="select"
+        @click="select(button)"
       >
-        <!-- @click.stop="select(button)" -->
+        <!-- :href="button.link" -->
         <div class="vertical-selected" v-if="selectedButton === button.title"></div>
         <div class="content">
           <v-icon class="socobutton-icon">{{ button.icon }}</v-icon>
           <span>{{ button.title }}</span>
         </div>
-      </router-link>
+      </button>
     </div>
   </v-navigation-drawer>
 </template>
@@ -58,7 +57,7 @@ export default class NavigationDrawer extends Vue {
 
   select (button: Button) {
     this.selectedButton = button.title
-    // this.$router.push({ name: button.routeName })
+    this.$router.push({ name: button.routeName })
   }
 }
 </script>

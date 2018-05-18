@@ -1,7 +1,7 @@
 <template>
   <v-toolbar app flat clipped-left color="#F1F4F3" height="80px" v-if="isLoggedIn">
-    <v-toolbar-title class="title">
-      <img src="../assets/soco-logo.png" alt="" height="56px">
+    <img src="../assets/soco-logo.png" alt="" height="56px" class="title">
+    <v-toolbar-title>
       <span class="socodarkgray--text hidden-xs-only">socoperator</span>
     </v-toolbar-title>
     <v-spacer></v-spacer>
@@ -72,7 +72,9 @@ export default class NavigationBar extends Vue {
   border-bottom: 2px solid #ECEFEE;
 
   .title {
+    padding: 12px;
     margin: 0 40px !important; 
+    vertical-align: middle;
     display: flex;
     align-items: center;
     flex-direction: row;
