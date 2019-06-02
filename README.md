@@ -8,24 +8,7 @@
  
 # socoperator
 
-> Hackaton front-end template with Vue.js, TypeScript, GraphQL, JWT and some
-CI set up.
-
-## Abstract
-
-This project is a boilerplate for hackatons.
-Instead of spending hours or days initialiazing a project, the CI, the
-deployments and so on, when you already have a short time span just clone
-this and a GraphQL backend
-and you're set to go.
-
-It is meant to be used with
-[Backathon](https://github.com/socialement-competents/backathon),
-but can be used with any GraphQL back-end.
-
-Consider the use of [Graphcool](https://www.graph.cool/) if you want to focus
-on the front-end because you don't have the time / need / knowledge to build
-a GraphQL back-end.
+>  Have a look at the project overview: https://github.com/socialement-competents/sococoin
 
 ## Getting started
 
